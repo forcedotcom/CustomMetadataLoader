@@ -1,0 +1,51 @@
+<!--
+ * Copyright (c) 2016, salesforce.com, inc.
+ * All rights reserved.
+ * Licensed under the BSD 3-Clause license. 
+ * For full license text, see LICENSE.txt file in the repo root  or https://opensource.org/licenses/BSD-3-Clause
+ */
+-->
+<apex:page controller="CustomMetadataUploadController" docType="html-5.0" sidebar="false">
+  <body class="homeTab">
+      <apex:form >
+            <apex:pagemessages escape="false"/>
+            
+            <apex:pageBlock >
+             <apex:ActionRegion >
+                <apex:pageBlockSection columns="2"> 
+                      
+                      <apex:inputFile value="{!csvFileBody}"/>
+                      
+                      <apex:selectList value="{!selectedType}" size="1">
+                          <apex:selectOptions value="{!cmdTypes}"/>
+                      </apex:selectList>
+                </apex:pageBlockSection>
+               </apex:ActionRegion>
+            </apex:pageBlock>
+      
+            <div align="center" draggable="false" >
+               <apex:ActionRegion >
+                <apex:commandButton value="Create/Update custom metadata" action="{!upsertCustomMetadata}" rendered="true"/>
+                <apex:actionSupport event="onclick"  action="{!upsertCustomMetadata}" rendered="{!showRecordsTable}" oncomplete="window.opener.location.reload();"/>
+              </apex:ActionRegion> 
+            </div>
+            <br/>
+            <br/>
+            <apex:pageBlock >
+                <apex:facet name="header">
+                     <apex:outputText style="font-weight:bold;float:center" value="Custom Metadata records for the type {!selectedType}" />
+                </apex:facet>
+                
+                <apex:outputPanel id="recordsPanel" rendered="{!showRecordsTable}" >
+                <apex:pageBlockTable value="{!records}" var="record">
+                 
+                    <apex:repeat value="{!fieldNamesForDisplay}" var="field" rendered="true">
+                        <apex:column value="{!record[field]}"/>
+                    </apex:repeat>
+                </apex:pageBlockTable>
+                </apex:outputPanel>
+                
+            </apex:pageBlock>
+       </apex:form>
+   </body>
+</apex:page>
