@@ -1,5 +1,10 @@
 # Custom Metadata Loader
 
+<a href="https://githubsfdeploy.herokuapp.com">
+   <img alt="Deploy to Salesforce" 
+		 src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
+</a>
+
 v 2.0
 The Custom Metadata loader tool now supports updates of existing custom metadata records. Load the csv file with updates to existing records, and use the tool the import and update the records.
 # How to use custom metadata loader to update existing records
