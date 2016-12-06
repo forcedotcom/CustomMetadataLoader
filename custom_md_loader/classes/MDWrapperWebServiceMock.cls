@@ -27,6 +27,9 @@ global class MDWrapperWebServiceMock implements WebServiceMock {
                 sr.success = true;
                 respElt.result.add(sr);
                 response.put('response_x', respElt);
+        	} else if (responseType == 'MetadataService.upsertMetadataResponse_element') {
+        		MetadataService.upsertMetadataResponse_element respElt = new MetadataService.upsertMetadataResponse_element();
+        		response.put('response_x', respElt);
         	}
    }
 }
