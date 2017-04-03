@@ -117,7 +117,24 @@ public class CustomMetadataUploadController {
         
         //validate header fields
         List<String> header = fields[0];
-        if(!isHeaderValid(new Set<String>(header), selectedType)) {
+        /*if(!isHeaderValid(new Set<String>(header), selectedType)) {
+            return;
+        }*/
+	// separated out columns as they were coming as string like: "DeveloperName;Label;Description;"
+	// it would pass the conditions under isHeadervalid() 
+	Set<String> columnSet = new Set<String>();
+        
+        for(String headerColumn :header) {
+            if (headerColumn == null) {
+                continue;
+            }
+            
+            for (String column :headerColumn.split(';')) {
+                columnSet.add(column);
+            }
+        }
+        
+        if(!isHeaderValid(columnSet, selectedType)) {
             return;
         }
         
