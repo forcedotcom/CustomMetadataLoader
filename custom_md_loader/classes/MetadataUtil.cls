@@ -95,9 +95,12 @@ public class MetadataUtil {
             }
             for(String fieldName : fieldNameSet) {
                 if(fieldName.equals(AppConstants.DEV_NAME_ATTRIBUTE)) {
-                    fieldsAndValues.put(AppConstants.FULL_NAME_ATTRIBUTE, typeDevName + '.'+ singleRowOfValues.get(index));
-                    //adding dev_name here since we might need it to default label
-                    fieldsAndValues.put(fieldName, fieldValueList.get(index));
+		    if (fieldValueList.size() > index) {
+                        fieldsAndValues.put(AppConstants.FULL_NAME_ATTRIBUTE, typeDevName + '.'+ fieldValueList.get(index));
+			     
+                        //adding dev_name here since we might need it to default label
+                        fieldsAndValues.put(fieldName, fieldValueList.get(index));
+		    }
                 } else {
                     if (fieldValueList.size() > index) {
                         fieldsAndValues.put(fieldName, fieldValueList.get(index));
