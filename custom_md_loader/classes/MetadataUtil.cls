@@ -60,7 +60,17 @@ public class MetadataUtil {
         	return;
         }
         MetadataService.Metadata[] customMetadataRecords = new MetadataService.Metadata[fieldValues.size()];
-        
+        // separated out columns as they were coming as string like: "DeveloperName;Label;Description;"
+	       // it would pass the conditions under isHeadervalid() 
+        Set<String> fieldNameSet;   
+        for (String fieldNames :header) {
+            if (String.isBlank(fieldNames)) {
+                continue;
+            }
+
+            fieldNameSet = new Set<String>(fieldNames.split(';'));
+        }
+
         for(List<String> singleRowOfValues : fieldValues) {
             if(header != null && header.size() != singleRowOfValues.size()) {
                 ApexPages.Message errorMessage = new ApexPages.Message(ApexPages.severity.ERROR, AppConstants.INVALID_FILE_ROW_SIZE_DOESNT_MATCH + 
@@ -72,13 +82,27 @@ public class MetadataUtil {
             Integer index = 0;
             String typeDevName = selectedType.subString(0, selectedType.indexOf(AppConstants.MDT_SUFFIX));
             Map<String, String> fieldsAndValues = new Map<String, String>();
-            for(String fieldName : header) {
+        
+            // separated out field values as they were coming as string like: "XXX;YYY;ZZZZ;"
+            List<String> fieldValueList;
+
+            for (String singleRowFieldValues :singleRowOfValues) {
+                if (String.isBlank(singleRowFieldValues)) {
+                    continue;
+                }
+            
+                fieldValueList = new List<String>(singleRowFieldValues.split(';'));
+            }
+            for(String fieldName : fieldNameSet) {
                 if(fieldName.equals(AppConstants.DEV_NAME_ATTRIBUTE)) {
                     fieldsAndValues.put(AppConstants.FULL_NAME_ATTRIBUTE, typeDevName + '.'+ singleRowOfValues.get(index));
                     //adding dev_name here since we might need it to default label
-                    fieldsAndValues.put(fieldName, singleRowOfValues.get(index));
+                    fieldsAndValues.put(fieldName, fieldValueList.get(index));
                 } else {
-                	fieldsAndValues.put(fieldName, singleRowOfValues.get(index));
+                    if (fieldValueList.size() > index) {
+                        fieldsAndValues.put(fieldName, fieldValueList.get(index));
+                    }
+                	//fieldsAndValues.put(fieldName, singleRowOfValues.get(index));
                 }
                 index++;
             }
