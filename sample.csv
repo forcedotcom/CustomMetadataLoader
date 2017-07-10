@@ -1,21 +1,21 @@
-Label,ns1__CountryCode__c,ns1__CountryName__c
-Australia,AU,Australia
-Brazil,BZ,Brazil
-Canada,CA,Canada
-China,CH,China
-Denmark,DE,Denmark
-France,FR,France
-Germany,GR,Germany
-India,IN,India
-Italy,IT,Italy
-Japan,JP,Japan
-Mexico,MX,Mexico
-Nepal,NP,Nepal
-Peru,PE,Peru
-Poland,PL,Poland
-Russia,RS,Russia
-South Africa,SF,SAfrica
-Spain,SP,Spain
-Swiz,SZ,Swiztzerland
-US,US,United States
-United Kingdom,UK,United Kingdom
+Label;ns1__CountryCode__c;ns1__CountryName__c
+Australia;AU;Australia
+Brazil;BZ;Brazil
+Canada;CA;Canada
+China;CH;China
+Denmark;DE;Denmark
+France;FR;France
+Germany;GR;Germany
+India;IN;India
+Italy;IT;Italy
+Japan;JP;Japan
+Mexico;MX;Mexico
+Nepal;NP;Nepal
+Peru;PE;Peru
+Poland;PL;Poland
+Russia;RS;Russia
+South Africa;SF;SAfrica
+Spain;SP;Spain
+Swiz;SZ;Swiztzerland
+US;US;United States
+United Kingdom;UK;United Kingdom
