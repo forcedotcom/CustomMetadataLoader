@@ -62,13 +62,13 @@ public class MetadataUtil {
         MetadataService.Metadata[] customMetadataRecords = new MetadataService.Metadata[fieldValues.size()];
         // separated out columns as they were coming as string like: "DeveloperName;Label;Description;"
 	       // it would pass the conditions under isHeadervalid() 
-        Set<String> fieldNameSet;   
+        Set<String> fieldNameSet = new Set<String>();  
         for (String fieldNames :header) {
             if (String.isBlank(fieldNames)) {
                 continue;
             }
 
-            fieldNameSet = new Set<String>(fieldNames.split(';'));
+            fieldNameSet.addAll(fieldNames.split(';'));
         }
 
         for(List<String> singleRowOfValues : fieldValues) {
@@ -84,14 +84,14 @@ public class MetadataUtil {
             Map<String, String> fieldsAndValues = new Map<String, String>();
         
             // separated out field values as they were coming as string like: "XXX;YYY;ZZZZ;"
-            List<String> fieldValueList;
+            ist<String> fieldValueList = new List<String>();
 
             for (String singleRowFieldValues :singleRowOfValues) {
                 if (String.isBlank(singleRowFieldValues)) {
                     continue;
                 }
             
-                fieldValueList = new List<String>(singleRowFieldValues.split(';'));
+                fieldValueList.addAll(singleRowFieldValues.split(';'));
             }
             for(String fieldName : fieldNameSet) {
                 if(fieldName.equals(AppConstants.DEV_NAME_ATTRIBUTE)) {
