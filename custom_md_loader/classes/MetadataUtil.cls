@@ -84,7 +84,7 @@ public class MetadataUtil {
             Map<String, String> fieldsAndValues = new Map<String, String>();
         
             // separated out field values as they were coming as string like: "XXX;YYY;ZZZZ;"
-            ist<String> fieldValueList = new List<String>();
+            List<String> fieldValueList = new List<String>();
 
             for (String singleRowFieldValues :singleRowOfValues) {
                 if (String.isBlank(singleRowFieldValues)) {
