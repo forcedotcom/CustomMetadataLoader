@@ -11,11 +11,30 @@
         <members>MetadataService</members>
         <members>MetadataServiceTest</members>
         <members>MetadataUtil</members>
+        
+        <members>MetadataLoader</members>
+        <members>MetadataMapper</members>
+        <members>MetadataMapperDefault</members>
+        <members>MetadataMapperCustom</members>
+        <members>MetadataMapperSimple</members>
+        <members>MetadataMappingInfo</members>
+        <members>MetadataMapperFactory</members>
+        <members>MetadataMapperType</members>
+        <members>MetadataLoaderClient</members>
+        <members>MetadataWrapperApiLoader</members>
+        <members>MetadataApexApiLoader</members>
+        <members>MetadataOpType</members>
+        <members>MetadataLoaderFactory</members>
+        <members>MetadataResponse</members>
+        <members>MetadataMigrationController</members>
+        <members>MetadataObjectCreator</members>
+        <members>JsonUtilities</members>        
         <name>ApexClass</name>
     </types>
     <types>
         <members>CustomMetadataLoader</members>
         <members>CustomMetadataRecordUploader</members>
+        <members>CMTMigrator</members>
         <name>ApexPage</name>
     </types>
     <types>
@@ -33,6 +52,7 @@
     </types>
     <types>
         <members>Custom_Metadata_Loader</members>
+        <members>CMT_Migrator</members>
         <name>CustomTab</name>
     </types>
     <types>

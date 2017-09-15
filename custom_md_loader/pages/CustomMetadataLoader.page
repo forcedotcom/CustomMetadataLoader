@@ -35,7 +35,7 @@
                         '</createMetadata>' +
                     '</env:Body>' +
                 '</env:Envelope>';
-            binding.open('POST', protocol + '//{!host}/services/Soap/m/34.0');
+            binding.open('POST', protocol + '//{!host}/services/Soap/m/40.0');
             binding.setRequestHeader('SOAPAction','""');
             binding.setRequestHeader('Content-Type', 'text/xml');
             binding.onreadystatechange =
