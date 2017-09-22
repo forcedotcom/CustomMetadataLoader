@@ -26,7 +26,7 @@ public with sharing class JsonUtilities {
     Public static Map<String, String> getValuesFromJson(String jsonString) {
         Map<String, Object> jsonObjMap;
         Map<String, String> jsonMap = new Map<String, String>();
-        if (TextUtil.isEmpty(jsonString) ){               
+        if (String.isBlank(jsonString)){               
             throw new JsonUtilException(JSON_EMPTY);
         }
         try {                
