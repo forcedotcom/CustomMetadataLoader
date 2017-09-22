@@ -49,17 +49,39 @@ public with sharing class MetadataWrapperApiLoader extends MetadataLoader {
     }
     
     public override void migrateAsIsWithObjCreation(String csName, String cmtName) {
-		super.migrateAsIsWithObjCreation(csName, cmtName);
-		MetadataMappingInfo mappingInfo = getMapper().getMappingInfo();
+    	System.debug('migrateAsIsWithObjCreation-->csName=' + csName);
+    	System.debug('migrateAsIsWithObjCreation-->cmtName=' + cmtName);
+    	
+		try{		
+			super.migrateAsIsWithObjCreation(csName, cmtName);
+			MetadataMappingInfo mappingInfo = getMapper().getMappingInfo();
+			System.debug('mappingInfo-->' + mappingInfo);
 		
-		MetadataObjectCreator.createCustomObject(mappingInfo);
-        MetadataObjectCreator.createCustomField(mappingInfo);
+			if(!response.isSuccess()) {
+				throw new MetadataMigrationException('Operation failed, please check messages!');
+				return;
+			}
+
+			MetadataObjectCreator.createCustomObject(mappingInfo);
+        	MetadataObjectCreator.createCustomField(mappingInfo);
         
-		migrate(mappingInfo);
+			migrate(mappingInfo);
+		}
+		catch(Exception e) {
+			List<MetadataResponse.Message> messages = response.getMessages();
+			if(messages == null) {
+				messages = new List<MetadataResponse.Message>();
+			}
+			messages.add(new MetadataResponse.Message(300, e.getMessage()));
+    	    response.setIsSuccess(false);
+    	    response.setMessages(messages);      	
+			
+			return;
+		}
 	    
 	    buildResponse();
     }
-    
+    	
     public override void migrateAsIsMapping(String csName, String cmtName) {
     	super.migrateAsIsMapping(csName, cmtName);
     	buildResponse();
@@ -94,6 +116,8 @@ public with sharing class MetadataWrapperApiLoader extends MetadataLoader {
 	        
 	 		String cmdName = mappingInfo.getCustomMetadadataTypeName();
 			Map<String, Schema.DescribeFieldResult> descFieldResultMap = mappingInfo.getSrcFieldResultMap();		
+            Map<String, String> srcTgtFieldsMap = mappingInfo.getCSToMDT_fieldMapping();
+        	System.debug('srcTgtFieldsMap ->' + srcTgtFieldsMap);
 	
 			MetadataService.Metadata[] customMetadataRecords = new MetadataService.Metadata[mappingInfo.getRecordList().size()];
 			Map<String, String> fieldsAndValues = new Map<String, String>();
@@ -103,9 +127,6 @@ public with sharing class MetadataWrapperApiLoader extends MetadataLoader {
 	            String typeDevName = cmdName.subString(0, cmdName.indexOf(AppConstants.MDT_SUFFIX));
 	            System.debug('typeDevName ->' + typeDevName);
 	        
-	            Map<String, String> srcTgtFieldsMap = mappingInfo.getCSToMDT_fieldMapping();
-	        	System.debug('srcTgtFieldsMap ->' + srcTgtFieldsMap);
-	        	
 	        	for(String csField : srcTgtFieldsMap.keySet()) {
 	        		// Set Target, Source
 	        		Schema.DescribeFieldResult descCSFieldResult = descFieldResultMap.get(csField.toLowerCase());
@@ -115,15 +136,9 @@ public with sharing class MetadataWrapperApiLoader extends MetadataLoader {
 	        		
 	        		if(descCSFieldResult.getType().name() == 'DATETIME') {
 						
-						System.debug('csRecord.get(csField) ->' + csRecord.get(csField));
-						//System.debug('String.valueOf(csRecord.get(csField)) ->' + String.valueOf(csRecord.get(csField)));
-						
 						if(csRecord.get(csField) != null) {
 							Datetime dt = DateTime.valueOf(csRecord.get(csField));
-							System.debug('Datetime dt ->' + dt);
-							String formattedDateTime = dt.format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'); // 12/22/2014 7:05 AM (MM/DD/YYYY HH:MM PERIOD)
-							System.debug('formattedDateTime-->' + formattedDateTime);
-							
+							String formattedDateTime = dt.format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'); 
 							fieldsAndValues.put(srcTgtFieldsMap.get(csField), formattedDateTime);
 						}
 					}
@@ -161,7 +176,7 @@ public with sharing class MetadataWrapperApiLoader extends MetadataLoader {
 	        
         }
         catch(Exception e) {
-        	System.debug('Error Message=' + e.getMessage());
+        	System.debug('MetadataWrapperApiLoader.Error Message=' + e.getMessage());
     		List<MetadataResponse.Message> messages = new List<MetadataResponse.Message>();
     		messages.add(new MetadataResponse.Message(100, e.getMessage()));
         
@@ -202,9 +217,6 @@ public with sharing class MetadataWrapperApiLoader extends MetadataLoader {
             }
         }
         customMetadata.values = customMetadataValues;
-        
-        System.debug('customMetadata ->' + customMetadata);
-        
         return customMetadata;
     }
     

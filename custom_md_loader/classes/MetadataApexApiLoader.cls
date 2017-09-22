@@ -95,7 +95,7 @@ public with sharing class MetadataApexApiLoader extends MetadataLoader {
 	                	
 	                		if(csRecord.get(fieldName) != null) {
 								Datetime dt = DateTime.valueOf(csRecord.get(fieldName));
-								String formattedDateTime = dt.format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'); // 12/22/2014 7:05 AM (MM/DD/YYYY HH:MM PERIOD)
+								String formattedDateTime = dt.format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ'); 
 								cmv.value = csRecord.get(formattedDateTime);
 							}
 							else {
@@ -132,6 +132,7 @@ public with sharing class MetadataApexApiLoader extends MetadataLoader {
 	    	System.debug('mdDeployStatus.getJobId()-->' + mdDeployStatus.getJobId());
 	    }
 	    catch(Exception e) {
+	    	System.debug('MetadataWrapperApiLoader.Error Message=' + e.getMessage());
     		List<MetadataResponse.Message> messages = new List<MetadataResponse.Message>();
     		messages.add(new MetadataResponse.Message(100, e.getMessage()));
         

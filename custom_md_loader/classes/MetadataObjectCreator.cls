@@ -61,134 +61,144 @@ public with sharing class MetadataObjectCreator {
 			'<length>{0}</length>';
 			            
 	public static void createCustomObject(MetadataMappingInfo mappingInfo) {
-		System.debug('createCustomObject ***************');
-		String fullName = mappingInfo.getCustomMetadadataTypeName();
-
-		System.debug('fullName ->' + fullName);
-		String strippedLabel = fullName.replaceAll('\\W+', '_').replaceAll('__+', '_').replaceAll('\\A[^a-zA-Z]+', '').replaceAll('_$', '');
-        System.debug('strippedLabel ->' + strippedLabel);
-	                
-        String pluralLabel = fullName.subString(0, fullName.indexOf(AppConstants.MDT_SUFFIX));
-        
-		String label = pluralLabel;
-        pluralLabel = pluralLabel + 's'; 
-        
-        System.debug('label ->' + label);
-        System.debug('pluralLabel ->' + pluralLabel);
-
-		String objectRequest = String.format(objectRequestBodySnippet, new String[]{UserInfo.getSessionId(), fullName, label, pluralLabel});
-        
-		System.debug('objectRequest-->' + objectRequest);        
-		HttpRequest httpReq = initHttpRequest('POST');
-        httpReq.setBody(objectRequest);
-        
-	    httpReq.setEndpoint(endPoint);
-        System.debug('httpReq-->' + httpReq);
-        getResponse(httpReq);
-    }
-    
-    public static void createCustomField(MetadataMappingInfo mappingInfo) {
-    	System.debug('createCustomField ***************');
-    	
-		String fullName = mappingInfo.getCustomMetadadataTypeName();
-
-		String strippedLabel = fullName.replaceAll('\\W+', '_').replaceAll('__+', '_').replaceAll('\\A[^a-zA-Z]+', '').replaceAll('_$', '');
-        System.debug('strippedLabel ->' + strippedLabel);
-
-		String fieldFullName 	= '';
-		String label 			= '';
-        String type_x 			= '';
-		String length_x 		= '';           
-        String defaultValue 	= '';
-        String precisionValue 	= '';
-        
-        String fieldRequest 	= '';
-        String reqBody 			= '';
-        
-        Map<String, Schema.DescribeFieldResult> descFieldResultMap = mappingInfo.getSrcFieldResultMap();
-        System.debug('descFieldResultMap-->' + descFieldResultMap);
-        
-        integer counter = 0;
-        for(String csField : mappingInfo.getCSToMDT_fieldMapping().keySet()) {
-        	if(mappingInfo.getCSToMDT_fieldMapping().get(csField).endsWith('__c')){
-        		length_x = '';
-        		
-        		System.debug('csField-->' + csField);
-				Schema.DescribeFieldResult descCSFieldResult = descFieldResultMap.get(csField.toLowerCase());
-				System.debug('descCSFieldResult-->' + descCSFieldResult);
-				
-            	String cmtField = mappingInfo.getCSToMDT_fieldMapping().get(csField);
-            	
-            	System.debug('cmtField-->' + cmtField);
-            	System.debug('fullName--> 2' + fullName);
-            	
-            	fieldFullName = fullName + '.' + cmtField;
-            	System.debug('fieldFullName--> 3' + fieldFullName);
-            	label = descCSFieldResult.getLabel();
-            	type_x = getConvertedType(descCSFieldResult.getType().name());
-            	length_x = String.valueOf(descCSFieldResult.getLength());
-            	
-            	if(descCSFieldResult.getLength() != 0 ) {
-            		length_x = String.format(fieldLengthSnippet, new String[]{length_x});
-            	}
-            	else {
-            		length_x = '';
-            	}
-            	if(type_x == 'Checkbox') {
-            		defaultValue = '<defaultValue>' + descCSFieldResult.getDefaultValue() +'</defaultValue>';
-            	}
-            	else{
-            		defaultValue = '';
-            	}
-            	if(type_x == 'Number' || type_x == 'Percent') {
-            		precisionValue = '<precision>' + descCSFieldResult.getPrecision() +'</precision>' +
-            						'<scale>' + descCSFieldResult.getScale() +'</scale>';
-            	}
-            	else{
-            		precisionValue = '';
-            	}
-            	// Length is set to 80 for Email/Phone/URL fields but no length field?
-            	if(type_x == 'Email' || type_x == 'Phone' || type_x == 'URL' || type_x == 'Url' || type_x == 'TextArea' ) {
-            		length_x = '';
-            	}
-            	
-		        fieldRequest = fieldRequest + String.format(fieldRequestSnippet, new String[]{fieldFullName, type_x, label, length_x, defaultValue, precisionValue});
-		        
-		        System.debug('fieldFullName-->' + fieldFullName);
-		        System.debug('label-->' + label);
-		        System.debug('type_x-->' + type_x);
-		        System.debug('length_x-->' + length_x);
-		        
-		        if(counter == 9) {
-		        	
-		        	reqBody = String.format(fieldRequestBodySnippet, new String[]{UserInfo.getSessionId() , fieldRequest});
+		try{
+			System.debug('createCustomObject -->');
+			String fullName = mappingInfo.getCustomMetadadataTypeName();
+	
+			System.debug('fullName ->' + fullName);
+			String strippedLabel = fullName.replaceAll('\\W+', '_').replaceAll('__+', '_').replaceAll('\\A[^a-zA-Z]+', '').replaceAll('_$', '');
+	        System.debug('strippedLabel ->' + strippedLabel);
+		                
+	        String pluralLabel = fullName.subString(0, fullName.indexOf(AppConstants.MDT_SUFFIX));
 	        
-			        System.debug('reqBody-->' + reqBody);        
-					HttpRequest httpReq = initHttpRequest('POST');
-			        httpReq.setBody(reqBody);
-				    httpReq.setEndpoint(endPoint);
-			        System.debug('httpReq-->' + httpReq);
-			        getResponse(httpReq);
-			        
-		        	fieldRequest = '';
-		        }
-		        
-		        counter++;
-		        
-        	}
-    	}
-        System.debug('fieldRequest-->' + fieldRequest);
-    	
-    	if(fieldRequest != '') {
-	        reqBody = String.format(fieldRequestBodySnippet, new String[]{UserInfo.getSessionId() , fieldRequest});
+			String label = pluralLabel;
+	        pluralLabel = pluralLabel + 's'; 
 	        
-	        System.debug('reqBody-->' + reqBody);        
+	        System.debug('label ->' + label);
+	        System.debug('pluralLabel ->' + pluralLabel);
+	
+			String objectRequest = String.format(objectRequestBodySnippet, new String[]{UserInfo.getSessionId(), fullName, label, pluralLabel});
+	        
+			System.debug('objectRequest-->' + objectRequest);        
 			HttpRequest httpReq = initHttpRequest('POST');
-	        httpReq.setBody(reqBody);
+	        httpReq.setBody(objectRequest);
+	        
 		    httpReq.setEndpoint(endPoint);
 	        System.debug('httpReq-->' + httpReq);
 	        getResponse(httpReq);
         }
+        catch(Exception e) {
+        	throw e;
+        }
+    }
+    
+    public static void createCustomField(MetadataMappingInfo mappingInfo) {
+    	try{
+	    	System.debug('createCustomField -->');
+	    	
+			String fullName = mappingInfo.getCustomMetadadataTypeName();
+	
+			String strippedLabel = fullName.replaceAll('\\W+', '_').replaceAll('__+', '_').replaceAll('\\A[^a-zA-Z]+', '').replaceAll('_$', '');
+	        System.debug('strippedLabel ->' + strippedLabel);
+	
+			String fieldFullName 	= '';
+			String label 			= '';
+	        String type_x 			= '';
+			String length_x 		= '';           
+	        String defaultValue 	= '';
+	        String precisionValue 	= '';
+	        
+	        String fieldRequest 	= '';
+	        String reqBody 			= '';
+	        
+	        Map<String, Schema.DescribeFieldResult> descFieldResultMap = mappingInfo.getSrcFieldResultMap();
+	        System.debug('descFieldResultMap-->' + descFieldResultMap);
+	        
+	        integer counter = 0;
+	        for(String csField : mappingInfo.getCSToMDT_fieldMapping().keySet()) {
+	        	if(mappingInfo.getCSToMDT_fieldMapping().get(csField).endsWith('__c')){
+	        		length_x = '';
+	        		
+	        		System.debug('csField-->' + csField);
+					Schema.DescribeFieldResult descCSFieldResult = descFieldResultMap.get(csField.toLowerCase());
+					System.debug('descCSFieldResult-->' + descCSFieldResult);
+					
+	            	String cmtField = mappingInfo.getCSToMDT_fieldMapping().get(csField);
+	            	
+	            	System.debug('cmtField-->' + cmtField);
+	            	System.debug('fullName--> 2' + fullName);
+	            	
+	            	fieldFullName = fullName + '.' + cmtField;
+	            	System.debug('fieldFullName--> 3' + fieldFullName);
+	            	label = descCSFieldResult.getLabel();
+	            	type_x = getConvertedType(descCSFieldResult.getType().name());
+	            	length_x = String.valueOf(descCSFieldResult.getLength());
+	            	
+	            	if(descCSFieldResult.getLength() != 0 ) {
+	            		length_x = String.format(fieldLengthSnippet, new String[]{length_x});
+	            	}
+	            	else {
+	            		length_x = '';
+	            	}
+	            	if(type_x == 'Checkbox') {
+	            		defaultValue = '<defaultValue>' + descCSFieldResult.getDefaultValue() +'</defaultValue>';
+	            	}
+	            	else{
+	            		defaultValue = '';
+	            	}
+	            	if(type_x == 'Number' || type_x == 'Percent') {
+	            		precisionValue = '<precision>' + descCSFieldResult.getPrecision() +'</precision>' +
+	            						'<scale>' + descCSFieldResult.getScale() +'</scale>';
+	            	}
+	            	else{
+	            		precisionValue = '';
+	            	}
+	            	// Length is set to 80 for Email/Phone/URL fields but no length field?
+	            	if(type_x == 'Email' || type_x == 'Phone' || type_x == 'URL' || type_x == 'Url' || type_x == 'TextArea' ) {
+	            		length_x = '';
+	            	}
+	            	
+			        fieldRequest = fieldRequest + String.format(fieldRequestSnippet, new String[]{fieldFullName, type_x, label, length_x, defaultValue, precisionValue});
+			        
+			        System.debug('fieldFullName-->' + fieldFullName);
+			        System.debug('label-->' + label);
+			        System.debug('type_x-->' + type_x);
+			        System.debug('length_x-->' + length_x);
+			        
+			        if(counter == 9) {
+			        	
+			        	reqBody = String.format(fieldRequestBodySnippet, new String[]{UserInfo.getSessionId() , fieldRequest});
+		        
+				        System.debug('reqBody-->' + reqBody);        
+						HttpRequest httpReq = initHttpRequest('POST');
+				        httpReq.setBody(reqBody);
+					    httpReq.setEndpoint(endPoint);
+				        System.debug('httpReq-->' + httpReq);
+				        getResponse(httpReq);
+				        
+			        	fieldRequest = '';
+			        }
+			        
+			        counter++;
+			        
+	        	}
+	    	}
+	        System.debug('fieldRequest-->' + fieldRequest);
+	    	
+	    	if(fieldRequest != '') {
+		        reqBody = String.format(fieldRequestBodySnippet, new String[]{UserInfo.getSessionId() , fieldRequest});
+		        
+		        System.debug('reqBody-->' + reqBody);        
+				HttpRequest httpReq = initHttpRequest('POST');
+		        httpReq.setBody(reqBody);
+			    httpReq.setEndpoint(endPoint);
+		        System.debug('httpReq-->' + httpReq);
+		        getResponse(httpReq);
+	        }
+		}
+        catch(Exception e) {
+        	throw e;
+        }	        
     }
     
     private static HttpRequest initHttpRequest(String httpMethod){

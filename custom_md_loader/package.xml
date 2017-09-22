@@ -28,6 +28,7 @@
         <members>MetadataResponse</members>
         <members>MetadataMigrationController</members>
         <members>MetadataObjectCreator</members>
+        <members>MetadataMigrationException</members>
         <members>JsonUtilities</members>        
         <name>ApexClass</name>
     </types>

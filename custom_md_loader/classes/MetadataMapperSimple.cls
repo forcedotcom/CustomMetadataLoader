@@ -61,10 +61,9 @@ public with sharing class MetadataMapperSimple extends MetadataMapperDefault {
 	     	mappingInfo.setRecordList(recordList);
 	     	mappingInfo.setSrcFieldResultMap(srcFieldResultMap);
 	        
-	        System.debug(recordList);
 		}
 		catch(Exception e) {
-			System.debug('Error Message=' + e.getMessage());
+			System.debug('MetadataMapperSimple.Error Message=' + e.getMessage());
 			throw e;
 		}     	
     }
@@ -74,8 +73,6 @@ public with sharing class MetadataMapperSimple extends MetadataMapperDefault {
     }
     
     public override void mapSourceTarget() {
-    	System.debug('MetadataMapperSimple.mapSourceTarget -->');
-    	
     	Map<String, String> csToMDT_fieldMapping = mappingInfo.getCSToMDT_fieldMapping();
     	csToMDT_fieldMapping.put(csFieldName, mdtFieldName);    	
     }

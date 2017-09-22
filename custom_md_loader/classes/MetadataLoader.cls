@@ -23,25 +23,20 @@ public virtual class MetadataLoader {
      */
     public virtual void migrateAsIsWithObjCreation(String csName, String cmtName) {
     	
-    	System.debug('MetadataLoader.migrateAsIsObjCreation --> csName=' + csName);
-    	System.debug('MetadataLoader.migrateAsIsObjCreation --> cmtName=' + cmtName);
-    
     	MetadataMappingInfo mappingInfo = null;
     	try{
-    		System.debug('MetadataLoader.migrateAsIsObjCreation --> 1');
     		mapper = MetadataMapperFactory.getMapper(MetadataMapperType.ASIS);
     		mappingInfo = mapper.mapper(csName, cmtName, null);
-    		System.debug('MetadataLoader.migrateAsIsObjCreation --> 2');
     	}
     	catch(Exception e) {
-    		System.debug('Error Message=' + e.getMessage());
+    		System.debug('MetadataLoader.Error Message=' + e.getMessage());
 			List<MetadataResponse.Message> messages = new List<MetadataResponse.Message>();
+			messages.add(new MetadataResponse.Message(100, 'Make sure Custom Setting exists in the org!'));
     		messages.add(new MetadataResponse.Message(100, 'Custom Setting Api Name and Custom Metadata Types Api names are required!'));
 			messages.add(new MetadataResponse.Message(200, 'Please check the Api names!'));            	
 			messages.add(new MetadataResponse.Message(300, e.getMessage()));
     	    response.setIsSuccess(false);
     	    response.setMessages(messages);      	
-            return;	
     	}
     }
 	
@@ -52,20 +47,16 @@ public virtual class MetadataLoader {
      *  cmtName: e.g. VAT_Settings if mdt is 'VAT_Settings__mdt'
      */
     public virtual void migrateAsIsMapping(String csName, String cmtName) {
-    	
-    	System.debug('MetadataLoader.migrateAsIsMapping --> csName=' + csName);
-    	System.debug('MetadataLoader.migrateAsIsMapping --> cmtName=' + cmtName);
-    
     	MetadataMappingInfo mappingInfo = null;
     	try{
-    		System.debug('MetadataLoader.migrateAsIsMapping --> 1');
     		mapper = MetadataMapperFactory.getMapper(MetadataMapperType.ASIS);
     		mappingInfo = mapper.mapper(csName, cmtName, null);
-    		System.debug('MetadataLoader.migrateAsIsMapping --> 2');
+	    	migrate(mappingInfo);
     	}
     	catch(Exception e) {
-    		System.debug('Error Message=' + e.getMessage());
+    		System.debug('MetadataLoader.Error Message=' + e.getMessage());
 			List<MetadataResponse.Message> messages = new List<MetadataResponse.Message>();
+			messages.add(new MetadataResponse.Message(100, 'Make sure Custom Setting and Custom Metadata Types exists in the org!'));
     		messages.add(new MetadataResponse.Message(100, 'Custom Setting Api Name and Custom Metadata Types Api names are required!'));
 			messages.add(new MetadataResponse.Message(200, 'Please check the Api names!'));            	
 			messages.add(new MetadataResponse.Message(300, e.getMessage()));
@@ -73,10 +64,6 @@ public virtual class MetadataLoader {
     	    response.setMessages(messages);      	
             return;	
     	}
-    	System.debug('MetadataLoader.migrateAsIsMapping --> 3');
-    	migrate(mappingInfo);
-    	System.debug('MetadataLoader.migrateAsIsMapping --> 4');
-    	
     }
     
     
@@ -90,9 +77,12 @@ public virtual class MetadataLoader {
     	try{
     		mapper = MetadataMapperFactory.getMapper(MetadataMapperType.SIMPLE);
 	    	mappingInfo = mapper.mapper(csNameAndField, cmtNameAndField, null);
+	        migrate(mappingInfo);
     	}
     	catch(Exception e) {
+    		System.debug('MetadataLoader.Error Message=' + e.getMessage());
     		List<MetadataResponse.Message> messages = new List<MetadataResponse.Message>();
+    		messages.add(new MetadataResponse.Message(100, 'Make sure Custom Setting and Custom Metadata Types exists in the org!'));
     		messages.add(new MetadataResponse.Message(100, 'Custom Setting Api Name/Field Name and Custom Metadata Types/Field Name names are required!'));
     		messages.add(new MetadataResponse.Message(200, 'Please check the format, <Custom Setting>.<field> and <Custom Metadata Types>.<field>'));
 			messages.add(new MetadataResponse.Message(300, 'Please check the Api names!'));            	
@@ -101,14 +91,6 @@ public virtual class MetadataLoader {
     	    response.setMessages(messages);        	
             return;	
     	}
-    
-    	System.debug('mappingInfo.getStandardFields() ->' + mappingInfo.getStandardFields());
-    	System.debug('mappingInfo ->' + mappingInfo.getSrcFieldNames());
-    	System.debug('cmtNameAndField ->' + cmtNameAndField);
-    	System.debug('mappingInfo.getSrcFieldResultMap() ->' + mappingInfo.getSrcFieldResultMap());
-    	System.debug('mappingInfo.getCSToMDT_fieldMapping() ->' + mappingInfo.getCSToMDT_fieldMapping());
-    
-        migrate(mappingInfo);
     }
     
     /**
@@ -119,17 +101,17 @@ public virtual class MetadataLoader {
 	 *  mapping: e.g. Json mapping between CS field Api and CMT field Api names     
      */
     public virtual void migrateCustomMapping(String csName, String cmtName, String mapping) {
-    	System.debug('MetadataLoader.migrateCustomMapping -->');
     	MetadataMappingInfo mappingInfo = null; 
     	try{
     		mapper = MetadataMapperFactory.getMapper(MetadataMapperType.CUSTOM);
 	    	mappingInfo = mapper.mapper(csName, cmtName, mapping);
-	    	
-	    	System.debug('MetadataLoader.migrateCustomMapping --> 2');
+	    	migrate(mappingInfo);
     	}
     	catch(Exception e) {
+    		System.debug('MetadataLoader.Error Message=' + e.getMessage());
     		System.debug('MetadataLoader.migrateCustomMapping --> E' + e.getMessage());
     		List<MetadataResponse.Message> messages = new List<MetadataResponse.Message>();
+    		messages.add(new MetadataResponse.Message(100, 'Make sure Custom Setting and Custom Metadata Types exists in the org!'));
     		messages.add(new MetadataResponse.Message(100, 'Custom Setting Api Name, Custom Metadata Types Api and Json Mapping names are required!'));
 			messages.add(new MetadataResponse.Message(200, 'Please check the Api names!'));
 			messages.add(new MetadataResponse.Message(200, 'Please check the Json format!'));            	
@@ -139,9 +121,6 @@ public virtual class MetadataLoader {
     	    response.setMessages(messages);  
             return;	
     	}
-    	System.debug('MetadataLoader.migrateCustomMapping --> 3');
-    	migrate(mappingInfo);
-    	System.debug('MetadataLoader.migrateCustomMapping --> 4');
     }
     
     public virtual void migrate(MetadataMappingInfo mappingInfo) {

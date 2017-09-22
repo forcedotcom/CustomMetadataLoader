@@ -20,21 +20,25 @@ public virtual with sharing class MetadataMapperDefault implements MetadataMappe
      * mapping: e.g. {}
      */ 
     public virtual MetadataMappingInfo mapper(String sFrom, String sTo, String mapping) {
-    	System.debug('MetadataMappingInfo mapper.sFrom-->' + sFrom);
-    	System.debug('MetadataMappingInfo mapper.sTo-->' + sTo);
-    	
-    	fetchSourceMetadataAndRecords(sFrom);
-
-        mappingInfo.setCustomSettingName(sFrom);
-        mappingInfo.setCustomMetadadataTypeName(sTo);
-
-		mapSourceTarget();
-    	return mappingInfo;    	
+    	try{
+	        mappingInfo.setCustomSettingName(sFrom);
+	        mappingInfo.setCustomMetadadataTypeName(sTo);
+	
+	    	fetchSourceMetadataAndRecords(sFrom);
+			mapSourceTarget();
+    	}
+    	catch(Exception e) {
+    		throw e;
+    	}    	
+    	return mappingInfo;
     }
     
     private void fetchSourceMetadataAndRecords(String customSettingApiName) {
-    	System.debug('MetadataMappingInfo fetchSourceMetadataAndRecords.customSettingApiName-->' + customSettingApiName);
     	
+	 	if(!mappingInfo.getCustomMetadadataTypeName().endsWith(AppConstants.MDT_SUFFIX)){
+            throw new MetadataMigrationException('Custom Metadata Types name should ends with ' + AppConstants.MDT_SUFFIX);
+        }
+	            
         srcFieldNames = new List<String>();
         Map<String,DescribeFieldResult> srcFieldResultMap = new Map<String, DescribeFieldResult>();
         
@@ -62,7 +66,7 @@ public virtual with sharing class MetadataMapperDefault implements MetadataMappe
 	     	mappingInfo.setSrcFieldResultMap(srcFieldResultMap);
 	    }
 		catch(Exception e) {
-			System.debug('Error Message=' + e.getMessage());
+			System.debug('MetadataMapperDefault.Error Message=' + e.getMessage());
 			throw e;
 		}     	
 	}
@@ -72,7 +76,6 @@ public virtual with sharing class MetadataMapperDefault implements MetadataMappe
     }
     
     public virtual void mapSourceTarget() {
-    	System.debug('MetadataMapperDefault.mapSourceTarget -->');
     	Map<String, String> csToMDT_fieldMapping = mappingInfo.getCSToMDT_fieldMapping();
     	for(String fieldName: srcFieldNames) {
 	    	csToMDT_fieldMapping.put(fieldName, fieldName);

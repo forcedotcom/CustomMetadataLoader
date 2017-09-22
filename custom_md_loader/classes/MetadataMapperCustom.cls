@@ -21,13 +21,21 @@ public with sharing class MetadataMapperCustom extends MetadataMapperDefault {
      * mapping: e.g. {"Field_cs_1__c", "Field_mdt_1__c"}
      */ 
     public override MetadataMappingInfo mapper(String sFrom, String sTo, String mapping) {
-    	fetchSourceMetadataAndRecords(sFrom, sTo, mapping);
-		mapSourceTarget();
-    	
-    	return mappingInfo;
+    	try{
+    		fetchSourceMetadataAndRecords(sFrom, sTo, mapping);
+			mapSourceTarget();
+    	}
+    	catch(Exception e) {
+    		throw e;
+    	}    	
+		return mappingInfo;
     }
     
     private void fetchSourceMetadataAndRecords(String csName, String mdtName, String mapping) {
+		if(!mdtName.endsWith(AppConstants.MDT_SUFFIX)){
+            throw new MetadataMigrationException('Custom Metadata Types name should ends with ' + AppConstants.MDT_SUFFIX);
+        }
+            
         List<String> srcFieldNames = new List<String>();
         Map<String,DescribeFieldResult> srcFieldResultMap = new Map<String, DescribeFieldResult>();
         
@@ -39,14 +47,12 @@ public with sharing class MetadataMapperCustom extends MetadataMapperDefault {
 	        Map<String, SObjectField> fields = objDef.fields.getMap();
 	            
 	        this.fieldsMap = JsonUtilities.getValuesFromJson(mapping);
-	        System.debug('fieldsMap->' + fieldsMap);
 	        
 	        for(String fieldName: fieldsMap.keySet()) {
 	        	srcFieldNames.add(fieldName);
 	        	DescribeFieldResult fieldDesc = fields.get(fieldName).getDescribe();
 	        	srcFieldResultMap.put(fieldName.toLowerCase(), fieldDesc);
 	    	}
-			System.debug('srcFieldNames->' + srcFieldNames);
 			
 	        String selectClause = 'SELECT ' + String.join(srcFieldNames, ', ') + ' ,Name '; 
 	        String query = selectClause + ' FROM ' + csName;
@@ -57,10 +63,9 @@ public with sharing class MetadataMapperCustom extends MetadataMapperDefault {
 	     	mappingInfo.setRecordList(recordList);
 	     	mappingInfo.setSrcFieldResultMap(srcFieldResultMap);
         
-        	System.debug(recordList);
  		}
 		catch(Exception e) {
-			System.debug('Error Message=' + e.getMessage());
+			System.debug('MetadataMapperCustom.Error Message=' + e.getMessage());
 			throw e;
 		}     	        	
         
