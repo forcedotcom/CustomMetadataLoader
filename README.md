@@ -41,37 +41,37 @@ Custom metadata loader has a sample custom metadata type CountryMapping__mdt tha
 # How to use custom metadata migrator
 
 1. Solution to migrate Custom Settings/Custom Objects to Custom Metadata Types.
-2. This solution provides two different options to do this migration:
-	a. Sync Operation: Migration will happen synchronously. Maximum 200 records can be migrated.
-	b. Async Operation: Migration will happen asynchronously. Maximum 50000 records can be migrated.
+2. This solution provides two different options to do the migration:
+	- Sync Operation: Migration will happen synchronously. Maximum 200 records can be migrated.
+	- Async Operation: Migration will happen asynchronously. Maximum 50000 records can be migrated.
 			To check the status of async migration, go to Deploy -> Deployment Status
 3. Migrate Custom Settings to new Custom Metadata Type
-	a. Creates Custom Metadata Type and migrate Custom Settings/Custom Objects data to Custom Metadata Types records as is. It will need following two inputs.
-		Api Name of Custom Setting (e.g. VAT_Settings_CS__c) <br/>
-		Api Name of Custom Metadata Types (e.g. VAT_Settings__mdt)
+	1. Creates Custom Metadata Type and migrate Custom Settings/Custom Objects data to Custom Metadata Types records as is. It will need following two inputs.
+		- Api Name of Custom Setting (e.g. VAT_Settings_CS__c) <br/>
+		- Api Name of Custom Metadata Types (e.g. VAT_Settings__mdt)
 4. Migrate Custom Settings to existing Custom Metadata Type.
-	a. Migrate Custom Settings/Custom Objects data to existing Custom Metadata Types records as is. It will need following two inputs.
-		Api Name of Custom Setting (e.g. VAT_Settings_CS__c)
-		Api Name of Custom Metadata Types (e.g. VAT_Settings__mdt)
+	1. Migrate Custom Settings/Custom Objects data to existing Custom Metadata Types records as is. It will need following two inputs.
+		- Api Name of Custom Setting (e.g. VAT_Settings_CS__c)
+		- Api Name of Custom Metadata Types (e.g. VAT_Settings__mdt)
 5. Migrate Custom Settings to existing Custom Metadata Type (using simple mapping)
-	a. Migrate Custom Settings/Custom Objects data to existing Custom Metadata Types records using simple mapping. It will need following two inputs.
-		Api Name of Custom Setting.fieldName (e.g. VAT_Settings_CS__c.Active__c)
-		Api Name of Custom Metadata Types.fieldName (e.g. VAT_Settings__mdt.Active__c)
+	1. Migrate Custom Settings/Custom Objects data to existing Custom Metadata Types records using simple mapping. It will need following two inputs.
+		- Api Name of Custom Setting.fieldName (e.g. VAT_Settings_CS__c.Active__c)
+		- Api Name of Custom Metadata Types.fieldName (e.g. VAT_Settings__mdt.Active__c)
 6. Migrate Custom Settings to existing Custom Metadata Type (using custom mapping)
-	a. Migrate Custom Settings/Custom Objects data to existing Custom Metadata Types records using custom Json mapping. It will need following two inputs.
-		Api Name of Custom Setting (e.g. VAT_Settings_CS__c)
-		Api Name of Custom Metadata Types (e.g. VAT_Settings__mdt)
-		Json Mapping (Sample below)
+	1. Migrate Custom Settings/Custom Objects data to existing Custom Metadata Types records using custom Json mapping. It will need following two inputs.
+		- 'Api Name of Custom Setting (e.g. VAT_Settings_CS__c)
+		- Api Name of Custom Metadata Types (e.g. VAT_Settings__mdt)
+		- Json Mapping (Sample below)
 		{
 			"Active__c" : "IsActive__c",
 			"Timeout__c" : "GlobalTimeout__c",
 			"EndPointURL__c" : "URL__c",
 		}
 7. Custom Metadata Types label and names
-	a. Custom Setting/Custom Object record name converted into Custom Metadata Types label and name.
-	b. Custom Setting name special character replaced with "_" in Custom Metadata Type names
-	c. If Custom Setting name starts with digit, then Custom Metadata Types name will be appended with "X"
+	- Custom Setting/Custom Object record name converted into Custom Metadata Types label and name.
+	- Custom Setting name special character replaced with "_" in Custom Metadata Type names
+	- If Custom Setting name starts with digit, then Custom Metadata Types name will be appended with "X"
 8. Custom Settings of type hierarchy not supported.
 9. Custom Objects with field types not supported in Custom Metadata Types not supported.
-10.Currency field on Custom Settings can't be migrated, you can use custom mapping to either avoid mapping or to map to another field.
+10. Currency field on Custom Settings can't be migrated, you can use custom mapping to either avoid mapping or to map to another field.
 
