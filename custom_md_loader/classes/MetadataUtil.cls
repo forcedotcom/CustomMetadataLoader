@@ -30,7 +30,7 @@ public class MetadataUtil {
                 allCmdProps = service.listMetadata(queries, 34);
                 mdApiStatus = Status.AVAILABLE;
             } catch (CalloutException e) {
-                if (!e.getMessage().contains('Unauthorized endpoint, please check Setup')) {
+                if (!e.getMessage().contains(AppConstants.ERROR_UNAUTHORIZED_ENDPOINT)) {
                     throw e;
                 }
                 mdApiStatus = Status.UNAVAILABLE;
@@ -73,7 +73,7 @@ public class MetadataUtil {
 
         for(List<String> singleRowOfValues : fieldValues) {
             if(header != null && header.size() != singleRowOfValues.size()) {
-                ApexPages.Message errorMessage = new ApexPages.Message(ApexPages.severity.ERROR, AppConstants.INVALID_FILE_ROW_SIZE_DOESNT_MATCH + 
+                ApexPages.Message errorMessage = new ApexPages.Message(ApexPages.severity.ERROR, System.Label.INVALID_FILE_ROW_SIZE_DOESNT_MATCH + 
                                                                        (startIndex + rowCount));
                 ApexPages.addMessage(errorMessage);
                 return;

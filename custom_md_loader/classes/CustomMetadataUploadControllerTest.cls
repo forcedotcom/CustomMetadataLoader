@@ -10,17 +10,17 @@ public class CustomMetadataUploadControllerTest {
     
     public static testmethod void testUploadNoFile() {
 		CustomMetadataUploadController ctrl = setup(null);
-        invokeCreateCMAndValidateError(ctrl, AppConstants.FILE_MISSING);
+        invokeCreateCMAndValidateError(ctrl, Label.FILE_MISSING);
     }
     
     public static testmethod void testUploadEmptyFile() {
 		CustomMetadataUploadController ctrl = setup(Blob.valueOf(''));
-        invokeCreateCMAndValidateError(ctrl, AppConstants.EMPTY_FILE);
+        invokeCreateCMAndValidateError(ctrl, Label.EMPTY_FILE);
     }
     
     public static testmethod void testSelectedTypeMissing() {
 		CustomMetadataUploadController ctrl = setup(Blob.valueOf('Text__c'), AppConstants.SELECT_STRING);
-        invokeCreateCMAndValidateError(ctrl, AppConstants.TYPE_OPTION_NOT_SELECTED);
+        invokeCreateCMAndValidateError(ctrl, Label.TYPE_OPTION_NOT_SELECTED);
     }
     
     public static testmethod void testInvalidHeaderMissingFields() {
@@ -61,7 +61,7 @@ public class CustomMetadataUploadControllerTest {
         String countryLabel = 'AmericaTest'+Math.random();
 		CustomMetadataUploadController ctrl = setup(Blob.valueOf('DeveloperName,CountryCode__c,CountryName__c\n'+countryLabel+',US'));
         
-        invokeCreateCMAndValidateError(ctrl, AppConstants.INVALID_FILE_ROW_SIZE_DOESNT_MATCH + '1');
+        invokeCreateCMAndValidateError(ctrl, System.Label.INVALID_FILE_ROW_SIZE_DOESNT_MATCH + '1');
     }
     
     static CustomMetadataUploadController setup(Blob file) {

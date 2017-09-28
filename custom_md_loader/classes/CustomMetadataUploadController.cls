@@ -104,13 +104,13 @@ public class CustomMetadataUploadController {
         }
         
         if(fields == null || (fields != null && fields.size() < 1)) {
-            ApexPages.Message errorMessage = new ApexPages.Message(ApexPages.severity.ERROR, AppConstants.EMPTY_FILE);
+            ApexPages.Message errorMessage = new ApexPages.Message(ApexPages.severity.ERROR, Label.EMPTY_FILE);
             ApexPages.addMessage(errorMessage);
             return;
         }
            
         if(selectedType == AppConstants.SELECT_STRING) {
-            ApexPages.Message errorMessage = new ApexPages.Message(ApexPages.severity.ERROR,AppConstants.TYPE_OPTION_NOT_SELECTED);
+            ApexPages.Message errorMessage = new ApexPages.Message(ApexPages.severity.ERROR, Label.TYPE_OPTION_NOT_SELECTED);
             ApexPages.addMessage(errorMessage);
             return;
         }

@@ -9,14 +9,9 @@
  * Utilities class for common manipulation of json format data
  *
  */
-
 public with sharing class JsonUtilities {
 
     public class JsonUtilException extends Exception {}
-    
-    public static String JSON_BAD_FORMAT = 'The provided Json String was badly formatted.';
-    public static String JSON_EMPTY = 'No field values were found in the Json String.';
-    
     
     /**
     * This basic method takes a string formatted as json and returns a map<String,String>
@@ -27,25 +22,25 @@ public with sharing class JsonUtilities {
         Map<String, Object> jsonObjMap;
         Map<String, String> jsonMap = new Map<String, String>();
         if (String.isBlank(jsonString)){               
-            throw new JsonUtilException(JSON_EMPTY);
+            throw new JsonUtilException(Label.ERROR_JSON_EMPTY);
         }
         try {                
             jsonObjMap = (Map<String, Object>)JSON.deserializeUntyped(jsonString);
             if(jsonObjMap == null || jsonObjMap.size() == 0) {
-                throw new JsonUtilException(JSON_EMPTY);
+                throw new JsonUtilException(Label.ERROR_JSON_EMPTY);
             } else {
                 for (String pKey : jsonObjMap.keySet() ) {
                     try {
                         String pVal = (String)jsonObjMap.get(pKey);
                         jsonMap.put(pKey, pVal);
                     } catch (exception e) {
-                        throw new JsonUtilException(JSON_BAD_FORMAT, e);
+                        throw new JsonUtilException(Label.ERROR_JSON_BAD_FORMAT, e);
                     }
                 }
             }                    
             return jsonMap;
         } catch (Exception e) {
-            throw new JsonUtilException(JSON_BAD_FORMAT, e);
+            throw new JsonUtilException(Label.ERROR_JSON_BAD_FORMAT, e);
         }   
     }
     

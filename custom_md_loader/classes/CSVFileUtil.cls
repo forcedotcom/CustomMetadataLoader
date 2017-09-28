@@ -9,7 +9,7 @@ public class CSVFileUtil {
 	//from https://developer.salesforce.com/page/Code_Samples#Parse_a_CSV_with_APEX
     public static List<List<String>> parseCSV(Blob csvFileBody,Boolean skipHeaders) {
         if(csvFileBody == null) {
-            ApexPages.Message errorMessage = new ApexPages.Message(ApexPages.severity.ERROR, AppConstants.FILE_MISSING);
+            ApexPages.Message errorMessage = new ApexPages.Message(ApexPages.severity.ERROR, Label.FILE_MISSING);
             ApexPages.addMessage(errorMessage);
             return null;
         }

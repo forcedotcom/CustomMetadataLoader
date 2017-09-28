@@ -4,276 +4,169 @@
  * Licensed under the BSD 3-Clause license. 
  * For full license text, see LICENSE.txt file in the repo root  or https://opensource.org/licenses/BSD-3-Clause
  */
- 
 public with sharing class MetadataObjectCreator {
 
-    static MetadataService.MetadataPort service = MetadataUtil.getPort();
-	static String endPoint = URL.getSalesforceBaseUrl().toExternalForm() + '/services/Soap/m/40.0';    
-    
-	private static String objectRequestBodySnippet =
-        '<?xml version="1.0" encoding="utf-8"?>' +
-        '<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'+
-            '<env:Header>' +
-                '<urn:SessionHeader xmlns:urn="http://soap.sforce.com/2006/04/metadata">' +
-                    '<urn:sessionId>{0}</urn:sessionId>' +
-                '</urn:SessionHeader>' +
-            '</env:Header>' +
-            '<env:Body>' +
-                '<createMetadata xmlns="http://soap.sforce.com/2006/04/metadata">' +
-                    '<metadata xsi:type="CustomObject">' +
-                        '<fullName>{1}</fullName>' +
-                       // '<description>{2}</description>' +
- 						'<label>{2}</label>' +
-                        '<pluralLabel>{3}</pluralLabel>' +                        
-                   '</metadata>' +
-                '</createMetadata>' +
-            '</env:Body>' +
-        '</env:Envelope>';        
+	private static MetadataService.MetadataPort service = MetadataUtil.getPort();
+	// Supported data types during migration. If source custom setting or 
+	// source custom object has extra data types than below map, it will
+	// not work. You can always use custom mapping approach in that case.
+	public static final Map<DisplayType, String> displayTypeToTypeMap = 
+			new Map<DisplayType, String>{ 
+				DisplayType.Boolean => 'Checkbox', 
+				DisplayType.Date => 'Date',
+				DisplayType.DateTime => 'DateTime', 
+				DisplayType.Double => 'Number',
+				DisplayType.Email => 'Email',
+				DisplayType.EncryptedString => 'Text',
+				DisplayType.Integer => 'Number',
+				DisplayType.Percent => 'Number', 
+				DisplayType.Phone => 'Phone',
+				DisplayType.Picklist => 'Picklist',
+				DisplayType.String => 'Text',
+				DisplayType.TextArea => 'TextArea',
+				DisplayType.URL => 'Url'};
 
-	private static String fieldRequestBodySnippet =
-            '<?xml version="1.0" encoding="utf-8"?>' +
-            '<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'+
-                '<env:Header>' +
-                    '<urn:SessionHeader xmlns:urn="http://soap.sforce.com/2006/04/metadata">' +
-                        '<urn:sessionId>{0}</urn:sessionId>' +
-                    '</urn:SessionHeader>' +
-                '</env:Header>' +
-                '<env:Body>' +
-                    '<createMetadata xmlns="http://soap.sforce.com/2006/04/metadata">' +
-                    	'{1}' +
-                    '</createMetadata>' +
-                '</env:Body>' +
-            '</env:Envelope>';        
-            
-	private static String fieldRequestSnippet = 
-			'<metadata xsi:type="CustomField">' +
-				'<fullName>{0}</fullName>' +
-                '<type>{1}</type>' +
-                '<label>{2}</label>' +
-                '{3}' + // length
-                '{4}' + // defaultValue
-                '{5}' + //  precisionValue
-            '</metadata>';
-            
-	private static String fieldLengthSnippet = 
-			'<length>{0}</length>';
-	private static String fieldDefaultValueSnippet = 
-			'<length>{0}</length>';
-			            
 	public static void createCustomObject(MetadataMappingInfo mappingInfo) {
-		try{
+		try {
 			System.debug('createCustomObject -->');
 			String fullName = mappingInfo.getCustomMetadadataTypeName();
-	
+
 			System.debug('fullName ->' + fullName);
 			String strippedLabel = fullName.replaceAll('\\W+', '_').replaceAll('__+', '_').replaceAll('\\A[^a-zA-Z]+', '').replaceAll('_$', '');
-	        System.debug('strippedLabel ->' + strippedLabel);
-		                
-	        String pluralLabel = fullName.subString(0, fullName.indexOf(AppConstants.MDT_SUFFIX));
-	        
+			System.debug('strippedLabel ->' + strippedLabel);
+
+			String pluralLabel = fullName.subString(0, fullName.indexOf(AppConstants.MDT_SUFFIX));
 			String label = pluralLabel;
-	        pluralLabel = pluralLabel + 's'; 
-	        
-	        System.debug('label ->' + label);
-	        System.debug('pluralLabel ->' + pluralLabel);
-	
-			String objectRequest = String.format(objectRequestBodySnippet, new String[]{UserInfo.getSessionId(), fullName, label, pluralLabel});
-	        
-			System.debug('objectRequest-->' + objectRequest);        
-			HttpRequest httpReq = initHttpRequest('POST');
-	        httpReq.setBody(objectRequest);
-	        
-		    httpReq.setEndpoint(endPoint);
-	        System.debug('httpReq-->' + httpReq);
-	        getResponse(httpReq);
-        }
-        catch(Exception e) {
-        	throw e;
-        }
-    }
-    
-    public static void createCustomField(MetadataMappingInfo mappingInfo) {
-    	try{
-	    	System.debug('createCustomField -->');
-	    	
-			String fullName = mappingInfo.getCustomMetadadataTypeName();
-	
-			String strippedLabel = fullName.replaceAll('\\W+', '_').replaceAll('__+', '_').replaceAll('\\A[^a-zA-Z]+', '').replaceAll('_$', '');
-	        System.debug('strippedLabel ->' + strippedLabel);
-	
-			String fieldFullName 	= '';
-			String label 			= '';
-	        String type_x 			= '';
-			String length_x 		= '';           
-	        String defaultValue 	= '';
-	        String precisionValue 	= '';
-	        
-	        String fieldRequest 	= '';
-	        String reqBody 			= '';
-	        
-	        Map<String, Schema.DescribeFieldResult> descFieldResultMap = mappingInfo.getSrcFieldResultMap();
-	        System.debug('descFieldResultMap-->' + descFieldResultMap);
-	        
-	        integer counter = 0;
-	        for(String csField : mappingInfo.getCSToMDT_fieldMapping().keySet()) {
-	        	if(mappingInfo.getCSToMDT_fieldMapping().get(csField).endsWith('__c')){
-	        		length_x = '';
-	        		
-	        		System.debug('csField-->' + csField);
-					Schema.DescribeFieldResult descCSFieldResult = descFieldResultMap.get(csField.toLowerCase());
-					System.debug('descCSFieldResult-->' + descCSFieldResult);
-					
-	            	String cmtField = mappingInfo.getCSToMDT_fieldMapping().get(csField);
-	            	
-	            	System.debug('cmtField-->' + cmtField);
-	            	System.debug('fullName--> 2' + fullName);
-	            	
-	            	fieldFullName = fullName + '.' + cmtField;
-	            	System.debug('fieldFullName--> 3' + fieldFullName);
-	            	label = descCSFieldResult.getLabel();
-	            	type_x = getConvertedType(descCSFieldResult.getType().name());
-	            	length_x = String.valueOf(descCSFieldResult.getLength());
-	            	
-	            	if(descCSFieldResult.getLength() != 0 ) {
-	            		length_x = String.format(fieldLengthSnippet, new String[]{length_x});
-	            	}
-	            	else {
-	            		length_x = '';
-	            	}
-	            	if(type_x == 'Checkbox') {
-	            		defaultValue = '<defaultValue>' + descCSFieldResult.getDefaultValue() +'</defaultValue>';
-	            	}
-	            	else{
-	            		defaultValue = '';
-	            	}
-	            	if(type_x == 'Number' || type_x == 'Percent') {
-	            		precisionValue = '<precision>' + descCSFieldResult.getPrecision() +'</precision>' +
-	            						'<scale>' + descCSFieldResult.getScale() +'</scale>';
-	            	}
-	            	else{
-	            		precisionValue = '';
-	            	}
-	            	// Length is set to 80 for Email/Phone/URL fields but no length field?
-	            	if(type_x == 'Email' || type_x == 'Phone' || type_x == 'URL' || type_x == 'Url' || type_x == 'TextArea' ) {
-	            		length_x = '';
-	            	}
-	            	
-			        fieldRequest = fieldRequest + String.format(fieldRequestSnippet, new String[]{fieldFullName, type_x, label, length_x, defaultValue, precisionValue});
-			        
-			        System.debug('fieldFullName-->' + fieldFullName);
-			        System.debug('label-->' + label);
-			        System.debug('type_x-->' + type_x);
-			        System.debug('length_x-->' + length_x);
-			        
-			        if(counter == 9) {
-			        	
-			        	reqBody = String.format(fieldRequestBodySnippet, new String[]{UserInfo.getSessionId() , fieldRequest});
-		        
-				        System.debug('reqBody-->' + reqBody);        
-						HttpRequest httpReq = initHttpRequest('POST');
-				        httpReq.setBody(reqBody);
-					    httpReq.setEndpoint(endPoint);
-				        System.debug('httpReq-->' + httpReq);
-				        getResponse(httpReq);
-				        
-			        	fieldRequest = '';
-			        }
-			        
-			        counter++;
-			        
-	        	}
-	    	}
-	        System.debug('fieldRequest-->' + fieldRequest);
-	    	
-	    	if(fieldRequest != '') {
-		        reqBody = String.format(fieldRequestBodySnippet, new String[]{UserInfo.getSessionId() , fieldRequest});
-		        
-		        System.debug('reqBody-->' + reqBody);        
-				HttpRequest httpReq = initHttpRequest('POST');
-		        httpReq.setBody(reqBody);
-			    httpReq.setEndpoint(endPoint);
-		        System.debug('httpReq-->' + httpReq);
-		        getResponse(httpReq);
-	        }
+			pluralLabel = pluralLabel + 's'; 
+
+			MetadataService.CustomObject customObject = new MetadataService.CustomObject();
+			customObject.fullName = fullName;
+			customObject.label = label;
+			customObject.pluralLabel = pluralLabel;
+			List<MetadataService.SaveResult> results =
+					service.createMetadata(
+							new MetadataService.Metadata[] { customObject });
+			handleSaveResults(results[0]);
+
 		}
-        catch(Exception e) {
-        	throw e;
-        }	        
-    }
-    
-    private static HttpRequest initHttpRequest(String httpMethod){
-		HttpRequest req = new HttpRequest();
-		req.setHeader('Accept', 'application/xml');
-    	req.setHeader('SOAPAction','""');
-        req.setHeader('Content-Type', 'text/xml');        
-		req.setMethod(httpMethod);
-		return req;		
+		catch (Exception e) {
+			System.debug('createCustomOnbject.Exception-->' + e.getMessage());
+			throw e;
+		}
 	}
 
-	private static String getResponse(HttpRequest request) {
-		Http http = new Http();				
-		HttpResponse response = new HttpResponse();
-		
-		response = http.send(request);
-		
-		System.debug('---- RESPONSE RECEIVED------');
-		System.debug(response);
-		
-		if (response.getStatusCode() == 200 || response.getStatusCode() == 201){
-            System.debug('Ok Received!');
+	public static void createCustomField(MetadataMappingInfo mappingInfo) {
+		try {
+			System.debug('createCustomField -->');
+
+			String fullName = mappingInfo.getCustomMetadadataTypeName();
+
+			String strippedLabel = fullName.replaceAll('\\W+', '_').replaceAll('__+', '_').replaceAll('\\A[^a-zA-Z]+', '').replaceAll('_$', '');
+			System.debug('strippedLabel ->' + strippedLabel);
+
+			String fieldFullName 	= '';
+			String label 			= '';
+			String type_x 			= '';
+
+			Map<String, Schema.DescribeFieldResult> descFieldResultMap = mappingInfo.getSrcFieldResultMap();
+
+			List<MetadataService.CustomField> customFields = new List<MetadataService.CustomField>();
+			integer counter = 0;
+			for(String csField : mappingInfo.getCSToMDT_fieldMapping().keySet()) {
+				if(mappingInfo.getCSToMDT_fieldMapping().get(csField).endsWith('__c')){
+
+					Schema.DescribeFieldResult descFieldResult = descFieldResultMap.get(csField.toLowerCase());
+					String cmtField = mappingInfo.getCSToMDT_fieldMapping().get(csField);
+					fieldFullName = fullName + '.' + cmtField;
+					label = descFieldResult.getLabel();
+					type_x = displayTypeToTypeMap.get(descFieldResult.getType());
+
+					MetadataService.CustomField customField = new MetadataService.CustomField();
+					customFields.add(customField);
+					customField.fullName = fieldFullName;
+					customField.label = label;
+					customField.type_x = type_x;
+
+					// Field datatype specifics 
+					if(type_x == 'Number' || type_x == 'Percent') {
+						customField.precision = descFieldResult.getPrecision();
+						customField.scale = descFieldResult.getScale();
+					}
+					if(type_x == 'Checkbox') {
+						customField.defaultValue = 
+								descFieldResult.getDefaultValue() == null ? 'false' : String.valueOf(descFieldResult.getDefaultValue());
+					}
+
+					boolean lengthReq = true;
+					if(descFieldResult.getLength() == 0 
+							|| type_x == 'Email' || type_x == 'Phone' 
+							|| type_x == 'URL' || type_x == 'Url' 
+							|| type_x == 'TextArea' || type_x == 'Picklist') {
+						lengthReq = false;
+					}
+					if(lengthReq && descFieldResult.getLength() != 0 ) {
+						customField.length = descFieldResult.getLength();
+					}
+					if(type_x == 'Picklist') {
+						customField.type_x = 'Picklist';
+						Metadataservice.Picklist pt = new Metadataservice.Picklist();
+						pt.sorted = false;
+						List<MetadataService.PicklistValue> picklistValues = new List<MetadataService.PicklistValue>();
+						for(Schema.PicklistEntry entry : descFieldResult.getPicklistValues()) {
+							Metadataservice.PicklistValue picklistValue = new Metadataservice.PicklistValue();
+							picklistValue.fullName = entry.getLabel();
+							picklistValue.default_x = entry.isDefaultValue();
+							picklistValues.add(picklistValue);
+						}
+						pt.picklistValues = picklistValues;
+						customField.picklist = pt;
+					}
+					// process as batches of 10 
+					if(counter == 9) {
+						List<MetadataService.SaveResult> results =
+								service.createMetadata(customFields);
+						handleSaveResults(results[0]);
+						customFields.clear();
+					}
+					counter++;
+				}
+			}
+			if(customFields.size() > 0) {
+				List<MetadataService.SaveResult> results =
+						service.createMetadata(customFields);
+				handleSaveResults(results[0]);
+				customFields.clear();
+			}
 		}
-		else{
-            System.debug('Error Received!');
-		}
-		String responseBody = response.getBody();
-		System.debug('responseBody-->' + responseBody);
-        
-		return responseBody;
+		catch (Exception e) {
+			System.debug('createCustomField.Exception-->' + e.getMessage());
+			throw e;
+		}	        
 	}
-      
-      
-	private static String getConvertedType(String type_x) {
-		String newtType = 'Text';
-		if(type_x == 'STRING') {
-			newtType = 'Text';
+
+	/**
+	 * Example helper method to interpret a SaveResult, throws an exception if errors are found
+	 **/
+	private static void handleSaveResults(MetadataService.SaveResult saveResult) {
+		// Nothing to see?
+		if(saveResult==null || saveResult.success)
+			return;
+		// Construct error message and throw an exception
+		if(saveResult.errors!=null) {
+			List<String> messages = new List<String>();
+			messages.add(
+					(saveResult.errors.size()==1 ? 'Error ' : 'Errors ') +
+					'occurred processing component ' + saveResult.fullName + '.');
+			for(MetadataService.Error error : saveResult.errors)
+				messages.add(
+						error.message + ' (' + error.statusCode + ').' +
+						( error.fields!=null && error.fields.size()>0 ?
+								' Fields ' + String.join(error.fields, ',') + '.' : '' ) );
+			if(messages.size()>0)
+				throw new MetadataMigrationException(String.join(messages, ' '));
 		}
-		else if(type_x == 'BOOLEAN') {
-			newtType = 'Checkbox';
-		}
-		else if(type_x == 'DOUBLE' || type_x == 'INTEGER') {
-			newtType = 'Number';
-		}
-		else if(type_x == 'PERCENT' || type_x == 'Percent') {
-			newtType = 'Percent';
-		}
-		else if(type_x == 'DATETIME') {
-			newtType = 'DateTime';
-		}
-		else if(type_x == 'DATE') {
-			newtType = 'Date';
-		}
-		else if(type_x == 'TEXTAREA') {
-			newtType = 'TextArea';
-		}
-		else if(type_x == 'PICKLIST') {
-			newtType = 'Picklist';
-		}
-		else if(type_x == 'EMAIL') {
-			newtType = 'Email';
-		}
-		else if(type_x == 'PHONE') {
-			newtType = 'Phone';
-		}
-		else if(type_x == 'URL') {
-			newtType = 'Url';
-		}
-		
-		else { 
-			newtType = type_x;
-		} 
-		
-		return newtType;
-	
+		if(!saveResult.success)
+			throw new MetadataMigrationException(Label.ERROR_REQUEST_FAILED_NO_ERROR);
 	}
-	      
+
 }

@@ -1,214 +1,193 @@
 <!--
  * Copyright (c) 2016, salesforce.com, inc.
  * All rights reserved.
- * Licensed under the BSD 3-Clause license. 
+ * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root  or https://opensource.org/licenses/BSD-3-Clause
  */
 -->
-<apex:page controller="MetadataMigrationController" docType="html-5.0" sidebar="false"  action="{!onLoad}">
+<apex:page controller="MetadataMigrationController" docType="html-5.0" sidebar="false">
 
 	<body class="homeTab">
 
       <apex:form id="form">
-    	
+
        <apex:pageBlock title="Messages" rendered="{!isMessage == true}">
             <apex:pageMessages />
         </apex:pageBlock>
 
 		<apex:pageBlock title="Custom Settings/Custom Objects to Custom Metadata Types Migration">
-		        <ol>
-		        
-		             <li>Solution to migrate Custom Settings/Custom Objects to Custom Metadata Types <br/> 
+			<ol>
+		            <li>Solution to migrate Custom Settings/Custom Objects to Custom Metadata Types<br/>
                 	</li>
 		            <br/>
+
+		            <li>Solution provides two different options to do the migration</li>
+		            <br/>
+		             <ul>
+		            		<li>Sync Operation: Migration will happen synchronously. Maximum 200 records can be migrated.<br/>
+		                    </li>
+
+		            		<li>Async Operation: Migration will happen asynchronously. Maximum 50000 records can be migrated.<br/>
+		            			To check the status of async migration, go to Deploy -> Deployment Status
+		                    </li>
+		            </ul>
+		            <br/>
+
+		            <li>Migrate Custom Settings to new Custom Metadata Type</li>
+		           <br/>
+		            <ul>
+		            		<li> Creates Custom Metadata Type and migrate Custom Settings/Custom Objects data to  <br/>
+				 					Custom Metadata Types records as is. It will need following two inputs. <br/>
+								 Api Name of Custom Setting (e.g. VAT_Settings_CS__c) <br/>
+								 Api Name of Custom Metadata Types (e.g. VAT_Settings__mdt)
+		                    </li>
+		            </ul>
+		            <br/>
+ 					<li>Migrate Custom Settings to existing Custom Metadata Type</li>
+		           <br/>
+		            <ul>
+		            		<li> Migrate Custom Settings/Custom Objects data to  <br/>
+				 					existing Custom Metadata Types records as is. It will need following two inputs. <br/>
+								 Api Name of Custom Setting (e.g. VAT_Settings_CS__c) <br/>
+								 Api Name of Custom Metadata Types (e.g. VAT_Settings__mdt) 		                    </li>
+		            </ul>
+		            <br/>
+		             <li>Migrate - Simple Mapping <br/>
+                    	</li>
+		            <br/>
+		                <ul>
+		            		<li> Migrate Custom Settings/Custom Objects data to  <br/>
+								 existing Custom Metadata Types records using simple mapping. It will need following two inputs. <br/>
+								 Api Name of Custom Setting.fieldName (e.g. VAT_Settings_CS__c.Active__c) <br/>
+								 Api Name of Custom Metadata Types.fieldName (e.g. VAT_Settings__mdt.Active__c)		                    </li>
+			            </ul>
+					<br/>
+		             <li>Migrate - Custom Mapping <br/>
+                    	</li>
+		            <br/>
+		                <ul>
+		            		<li> Migrate Custom Settings/Custom Objects data to  <br/>
+								 existing Custom Metadata Types records using custom Json mapping. It will need following two inputs. <br/>
+								 Api Name of Custom Setting (e.g. VAT_Settings_CS__c) <br/>
+								 Api Name of Custom Metadata Types (e.g. VAT_Settings__mdt) <br/>
+								 Json Mapping (Sample below) <br/>
+			 					{         <br/>
+									"Active__c" : "IsActive__c", <br/>
+									"Timeout__c" : "GlobalTimeout__c",  <br/>
+									"EndPointURL__c" : "URL__c" <br/>
+								}
+		                    </li>
+		                </ul>
+		            <br/>
+
 		            <li>Custom Metadata Types label and names</li>
 		            <br/>
 		             <ul>
 		            		<li> Custom Setting record name converted into Custom Metadata Types label and name <br/>
 		                    </li>
-		                  
+
 		            		<li> e.g. Custom Setting name special character replaced with "_" in Custom Metadata Type names<br/>
 		                    </li>
-		                    
-		            		<li> e.g. If Custom Setting name starts with digit, then Custom Metadata Types name will be appended with "X" <br/>
+
+		            		<li> e.g. If Custom Setting name starts with digit, then Custom Metadata Types name will be appended with "X"
 		                    </li>
-		            </ul>   
-		             <br/>
-		            <li>Currency field on Custom Settings can't be migrated <br/>
+		            </ul>
+		            <br/>
+		            <li>Custom Settings of type hierarchy not supported<br/>
                 	</li>
-		            <br/>
-		        
-		            <li>Migrate - As Is (with object creation)</li>
-		           <br/>
-		            <ul>
-		            		<li> As Is (with object creation)<br/>
-		            			/********************************************************* <br/>
-								 * Desc        	Creates Custom object and migrate Custom Settings data to  <br/>
-								 				Custom Metadata Types records as is <br/>
-								 * @param      	Name of Custom Setting Api (VAT_Settings_CS__c) <br/>
-								 * @param      	Name of Custom Metadata Types Api (VAT_Settings__mdt) <br/>	 
-								 * @return	    <br/>
-								 *********************************************************/ <br/> <br/>
-									            			
-		                        MetadataLoader loader = MetadataLoaderFactory.getLoader(MetadataOpType.APEXWRAPPER); <br/>
-        						loader.migrateAsIsWithObjCreation('VAT_Settings_CS__c', 'VAT_Settings__mdt'); <br/>
-		                        
-		                        <br/><br/>
-		                    </li>
-		                  
-		            </ul>   
- 					<li>Migrate - As Is</li>
-		           <br/>
-		            <ul>
-		            		<li> As Is Mapping <br/>
-		            			/********************************************************* <br/>
-								 * Desc        	Migrate Custom Settings/Custom Objects data to Custom Metadata Types records as is <br/>
-								 * @param      	Name of Custom Setting/Custom Objects Api (VAT_Settings_CS__c) <br/>
-								 * @param      	Name of Custom Metadata Types Api (VAT_Settings__mdt) <br/>	 
-								 * @return	    <br/>
-								 *********************************************************/ <br/> <br/>
-									            			
-								MetadataLoader loader = MetadataLoaderFactory.getLoader(MetadataOpType.APEXWRAPPER);<br/>
-						        loader.migrateAsIsMapping('VAT_Settings_CS__c', 'VAT_Settings__mdt');<br/>
-		                        <br/><br/>
-		                    </li>
-		                  
-		            </ul>   		            
-		             <li>Migrate - Simple Mapping <br/>
-                    	</li>
-		            <br/>
-		                <ul>
-		                	<li> <br/>
- 								/********************************************************* <br/> 
-								 * Desc     	Migrate Custom Settings/Custom Objects data to Custom Metadata Types records if you have only <br/> 
-								 *				one field mapping <br/>
-								 * @param      	Name of Custom Setting/Custom Objects Api.fieldName (VAT_Settings_CS__c.Active__c) <br/>  
-								 * @param      	Name of Custom Metadata Types Api.fieldMame	 (VAT_Settings__mdt.IsActive__c) <br/> 
-								 * @return	    <br/>
-								 *********************************************************/ <br/> <br/>
-						    	MetadataLoader loader = MetadataLoaderFactory.getLoader(MetadataOpType.APEXWRAPPER);<br/>
-						        loader.migrateSimpleMapping('VAT_Settings_CS__c.Active__c', 'VAT_Settings__mdt.IsActive__c');<br/>
-		                        <br/><br/>
-		                    </li>
-			            </ul>
-			            
-		             <li>Migrate - Custom Mapping <br/>
-                    	</li>
-		            <br/>
-		                <ul>
-		                    <li> <br/> 
-		                        
-								/********************************************************* <br/> 
-								 * Desc     	Migrate Custom Settings/Custom Objects data to Custom Metadata Types records if you have only  <br/> 
-								 *				different Api names in Custom Settings and Custom Metadata Types <br/> 
-								 * @param      	Name of Custom Setting/Custom Objects Api (VAT_Settings_CS__c) <br/> 
-								 * @param      	Name of Custom Metadata Types Api (VAT_Settings__mdt) <br/> 
-								 * @param      	Json Mapping (Sample below) <br/> 
-								 					{         <br/> 
-														"Active__c" : "IsActive__c", <br/> 
-														"Timeout__c" : "GlobalTimeout__c",  <br/>        
-														"EndPointURL__c" : "URL__c", <br/> 
-													} <br/> 
-														 	 <br/> 				
-								 * @return	    <br/> 
-								 *********************************************************/ <br/>  <br/> 
-		                         <br/> 
-								String jsonMapping = '{'+ <br/>         
-									'"Active__c" : "Active__c",'+ <br/> 
-									'"Timeout__c" : "Timeout__c",'+ <br/>         
-									'"EndPointURL__c" : "EndPointURL__c",'+ <br/> 
-									'};'; <br/> 
-						    	MetadataLoader loader = MetadataLoaderFactory.getLoader(MetadataOpType.APEXWRAPPER); <br/>
-						        loader.migrateCustomMapping('VAT_Settings_CS__c', 'VAT_Settings__mdt', jsonMapping); <br/>
-						         <br/>
-		                    </li>
-		                </ul>
 
 		            <br/>
-		                   
+		            <li>Custom Objects with field types not supported in Custom Metadata Types not supported<br/>
+                	</li>
+
+		            <br/>
+		            <li>Currency field on Custom Settings can't be migrated<br/>
+                	</li>
+		            <br/>
+
 		        </ol>
 		    </apex:pageBlock>
-		                        
-            <apex:pageBlock title="Migrate - AS Is (with object creation)">
-            
+
+            <apex:pageBlock title="Migrate Custom Settings to new Custom Metadata Type">
+
                  <table>
                      <tr>
                         <td><b>Custom Setting/Custom Objects Name (From) </b></td>
                         <td><apex:inputText value="{!csFieldObjCreation}" id="csFieldObjCreation" size="100"/></td>
-                    </tr>  
+                    </tr>
                      <tr>
                         <td><b>Custom Metadata Type Name (To) </b></td>
                         <td><apex:inputText value="{!cmtFieldObjCreation}" id="cmtFieldObjCreation" size="100"/></td>
-                        
-                    </tr>        
+
+                    </tr>
                      <tr>
                         <td><b>Operation Type</b></td>
                         <td> <apex:selectList value="{!opTypeFieldObjCreation}" size="1">
                                   <apex:selectOptions value="{!objCreationOpTypes}"/>
                             </apex:selectList>
                           </td>
-                    </tr>        
-                              
+                    </tr>
+
                 </table>
-                                
+
                 <div draggable="false" >
                     <br/>
-                        <apex:commandButton value="Migrate - As Is (with object creation)" action="{!migrateAsIsWithObjCreation}" id="migrateAsIsWithObjCreation"/>
+                        <apex:commandButton value="Migrate Custom Settings to new Custom Metadata Type" action="{!migrateAsIsWithObjCreation}" id="migrateAsIsWithObjCreation"/>
                      <br/>
                 </div>
             </apex:pageBlock>
-            
-            <apex:pageBlock title="Migrate As Is">
-            
+
+            <apex:pageBlock title="Migrate Custom Settings to existing Custom Metadata Type">
+
                  <table>
                      <tr>
                         <td><b>Custom Setting/Custom Objects Name (From) </b></td>
                         <td><apex:inputText value="{!customSettingFromFieldAsIs}" id="customSettingFromFieldAsIs" size="100"/></td>
-                    </tr>  
+                    </tr>
                      <tr>
                         <td><b>Custom Metadata Type Name (To) </b></td>
                         <td> <apex:selectList value="{!selectedType}" size="1">
                                   <apex:selectOptions value="{!cmdTypes}"/>
                             </apex:selectList>
                           </td>
-                    </tr>        
+                    </tr>
                      <tr>
                         <td><b>Operation Type</b></td>
-                        <td> <apex:selectList value="{!selectedOpType1}" size="1">
+                        <td> <apex:selectList value="{!selectedOpTypeAsIs}" size="1">
                                   <apex:selectOptions value="{!opTypes}"/>
                             </apex:selectList>
                           </td>
-                    </tr>        
-                              
+                    </tr>
+
                 </table>
-                                
+
                 <div draggable="false" >
                     <br/>
-                        <apex:commandButton value="Migrate As Is" action="{!migrateAsIsMapping}" id="migrateAsIsMapping"/>
+                        <apex:commandButton value="Migrate Custom Settings to existing Custom Metadata Type" action="{!migrateAsIsMapping}" id="migrateAsIsMapping"/>
                      <br/>
                 </div>
             </apex:pageBlock>
-            
-            <apex:pageBlock title="Migrate Simple Mapping (Good, if only one field to map)">
+
+            <apex:pageBlock title="Migrate Custom Settings to existing Custom Metadata Type (using simple mapping)">
 
                 <table>
                      <tr>
                         <td><b>Custom Setting/Custom Objects, Format: CS.fieldName</b></td>
                         <td><apex:inputText value="{!customSettingFromFieldSimple}" id="customSettingFromFieldSimple" size="100"/></td>
-                    </tr>        
+                    </tr>
                     <tr>
                         <td><b>Custom Metadata Type, Format: CMT.fieldName</b></td>
                         <td><apex:inputText value="{!cmdToFieldSimple}" id="cmdToFieldSimple" size="100"/></td>
-                    </tr>  
+                    </tr>
                      <tr>
                         <td><b>Operation Type</b></td>
-                        <td> <apex:selectList value="{!selectedOpType2}" size="1">
+                        <td> <apex:selectList value="{!selectedOpTypeSimple}" size="1">
                                   <apex:selectOptions value="{!opTypes}"/>
                             </apex:selectList>
                           </td>
-                    </tr>                                      
+                    </tr>
                 </table>
-                                       
+
                 <div draggable="false" >
                     <br/>
                         <apex:commandButton value="Migrate Simple Mapping" action="{!migrateSimpleMapping}" id="migrateSimpleMapping"/>
@@ -216,41 +195,36 @@
                 </div>
             </apex:pageBlock>
 
-            <apex:pageBlock title="Migrate Cusotm Mapping (JSON)">
-
+            <apex:pageBlock title="Migrate Custom Settings to existing Custom Metadata Type (using custom mapping)">
                 <table>
                      <tr>
                         <td><b>Custom Setting/Custom Objects Name</b></td>
                         <td><apex:inputText value="{!customSettingFromFieldJson}" id="customSettingFromFieldJson" size="100"/></td>
-                    </tr>        
+                    </tr>
                     <tr>
                         <td><b>Custom Metadata Type Name</b></td>
                         <td><apex:inputText value="{!cmdToFieldJson}" id="cmdToFieldJson" size="100"/></td>
-                    </tr>  
+                    </tr>
                      <tr>
                         <td><b>Custom Setting, JSON, example: </b></td>
-                        <td><apex:inputTextArea value="{!jsonMapping}" id="jsonMapping" rows="10" cols="100"/>
-                            
-                        </td>
-                    </tr>        
+                        <td><apex:inputTextArea value="{!jsonMapping}" id="jsonMapping" rows="10" cols="100"/></td>
+                    </tr>
                      <tr>
                         <td><b>Operation Type</b></td>
-                        <td> <apex:selectList value="{!selectedOpType3}" size="1">
+                        <td> <apex:selectList value="{!selectedOpTypeCustom}" size="1">
                                   <apex:selectOptions value="{!opTypes}"/>
                             </apex:selectList>
                           </td>
-                    </tr>                                      
+                    </tr>
                 </table>
-                                       
+
                 <div draggable="false" >
                     <br/>
-                        <apex:commandButton value="Migrate Cusotm Mapping (JSON)" action="{!migrateCustomMapping}" id="migrateCustomMapping"/>
+                        <apex:commandButton value="Migrate Custom Mapping (JSON)" action="{!migrateCustomMapping}" id="migrateCustomMapping"/>
                     <br/>
                 </div>
             </apex:pageBlock>
-           
-            
-           
+
        </apex:form>
    </body>
 </apex:page>
