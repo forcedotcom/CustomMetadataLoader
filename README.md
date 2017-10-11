@@ -45,30 +45,37 @@ Use one of the below option to migrate Custom Settings or Custom Objects to Cust
 ### Option 1: Migrate Custom Settings/Custom Objects to new Custom Metadata Type
 
 Input the following:
-	- Api name of Custom Setting or Custom Object (e.g. VAT_Settings_CS__c)
-	- Api name of Custom Metadata Types (e.g. VAT_Settings__mdt)
+
+	--Api name of Custom Setting or Custom Object (e.g. VAT_Settings_CS__c)
+	--Api name of Custom Metadata Types (e.g. VAT_Settings__mdt)
+
 Click on 'Migrate'
 
 ### Option 2: Migrate Custom Settings/Custom Objects to existing Custom Metadata Type
 
 Input the following:
-	- Api name of Custom Setting (e.g. VAT_Settings_CS__c)
-	- Select the name of existing Custom Metadata Types
+
+	--Api name of Custom Setting (e.g. VAT_Settings_CS__c)
+	--Select the name of existing Custom Metadata Types
+
 Click on 'Migrate'
 
 ### Option 3: Migrate Custom Settings/Custom Objects to existing Custom Metadata Type (using simple mapping)
 
 Input the following:
-	- Api name of Custom Setting.fieldName (e.g. VAT_Settings_CS__c.Active__c)
-	- Api name of Custom Metadata Types.fieldName (e.g. VAT_Settings__mdt.Active__c)
+
+	--Api name of Custom Setting.fieldName (e.g. VAT_Settings_CS__c.Active__c)
+	--Api name of Custom Metadata Types.fieldName (e.g. VAT_Settings__mdt.Active__c)
+
 Click on 'Migrate'
 
 ### Option 4: Migrate Custom Settings/Custom Objects to existing Custom Metadata Type (using custom mapping)
 
 Input the following:
-	- Api Name of Custom Setting (e.g. VAT_Settings_CS__c)
-	- Api Name of Custom Metadata Types (e.g. VAT_Settings__mdt)
-	- Json Mapping (Sample below)
+
+	--Api Name of Custom Setting (e.g. VAT_Settings_CS__c)
+	--Api Name of Custom Metadata Types (e.g. VAT_Settings__mdt)
+	--Json Mapping (Sample below)
 		{
 			"Active__c" : "IsActive__c",
 			"Timeout__c" : "GlobalTimeout__c",
