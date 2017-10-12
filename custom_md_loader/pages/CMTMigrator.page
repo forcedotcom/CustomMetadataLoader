@@ -14,110 +14,14 @@
 
 	<body>
       <apex:form id="form">
-       <apex:pageBlock title="Messages" rendered="{!isMessage == true}">
+       	<apex:pageBlock title="Messages" rendered="{!isMessage == true}">
             <apex:pageMessages />
         </apex:pageBlock>
 
-		<apex:pageBlock title="Custom Settings/Custom Objects to Custom Metadata Types Migration">
-			<ol>
-				<li>Solution to migrate Custom Settings/Custom Objects to Custom Metadata Types<br/></li>
-		        <br/>
-
-		        <li>This solution provides four different options to do the migration</li>
-		        <br/>
-
-		        <li>Option 1: Migrate Custom Settings/Custom Objects to new Custom Metadata Type</li>
-		        <br/>
-		        <ul>
-		        	<li> Creates Custom Metadata Type and migrate Custom Settings/Custom Objects data to  <br/>
-				 		Custom Metadata Types records as is. It will need following two inputs. <br/>
-							Api Name of Custom Setting/Custom Object (e.g. VAT_Settings_CS__c) <br/>
-							Api Name of Custom Metadata Types (e.g. VAT_Settings__mdt)
-					</li>
-				</ul>
-		        <br/>
- 				<li>Option 2: Migrate Custom Settings/Custom Objects to existing Custom Metadata Type</li>
-		        <br/>
-		        <ul>
-		        	<li> Migrate Custom Settings/Custom Objects data to  <br/>
-						existing Custom Metadata Types records as is. It will need following two inputs. <br/>
-							 Api Name of Custom Setting/Custom Object (e.g. VAT_Settings_CS__c) <br/>
-							 Api Name of Custom Metadata Types (e.g. VAT_Settings__mdt)
-					</li>
-				</ul>
-		        <br/>
-		        <li>Option 3: Migrate - Simple Mapping <br/></li>
-				<br/>
-		        <ul>
-		        	<li> Migrate Custom Settings/Custom Objects data to  <br/>
-						existing Custom Metadata Types records using simple mapping. It will need following two inputs. <br/>
-							Api Name of Custom Setting/Custom Object.fieldName (e.g. VAT_Settings_CS__c.Active__c) <br/>
-							Api Name of Custom Metadata Types.fieldName (e.g. VAT_Settings__mdt.Active__c)		                    </li>
-				</ul>
-				<br/>
-		        <li>Option 4: Migrate - Custom Mapping <br/></li>
-		            <br/>
-	              <ul>
-					 <li> Migrate Custom Settings/Custom Objects data to  <br/>
-						existing Custom Metadata Types records using custom Json mapping. It will need following two inputs. <br/>
-							Api Name of Custom Setting/Custom Object (e.g. VAT_Settings_CS__c) <br/>
-							Api Name of Custom Metadata Types (e.g. VAT_Settings__mdt) <br/>
-							Json Mapping (Sample below) <br/>
-			 				{         <br/>
-								 "Active__c" : "IsActive__c", <br/>
-								 "Timeout__c" : "GlobalTimeout__c",  <br/>
-								"EndPointURL__c" : "URL__c" <br/>
-							}
-						</li>
-		             </ul>
-		            <br/>
-
-		            <li>Custom Metadata Types label and names</li>
-		            <br/>
-		            <ul>
-		            		<li> Custom Setting/Custom Object record name converted into Custom Metadata Types label and name <br/>
-		                    </li>
-
-		            		<li> e.g. Name special character replaced with "_" in Custom Metadata Type names<br/>
-		                    </li>
-
-		            		<li> e.g. If Custom Setting name starts with digit, then Custom Metadata Types name will be appended with "X"
-		                    </li>
-		            </ul>
-		            <br/>
-
-		            <li>Sync/Async operations</li>
-		            <br/>
-		             <ul>
-		            		<li>Sync Operation: Migration will happen synchronously. Maximum 200 records can be migrated.<br/>
-		                    </li>
-
-		            		<li>Async Operation: Migration will happen asynchronously. Maximum 50000 records can be migrated.<br/>
-		            			To check the status of async migration, go to Deploy -> Deployment Status
-		                    </li>
-		            </ul>
-		            <br/>
-
-		            <li>Custom Settings of type hierarchy not supported<br/>
-                	</li>
-
-		            <br/>
-		            <li>Custom Objects with field types not supported in Custom Metadata Types not supported<br/>
-                	</li>
-
-		            <br/>
-		            <li>Currency field on Custom Settings can't be migrated<br/>
-                	</li>
-		            <br/>
-
-			</ol>
-		</apex:pageBlock>
-
-        <apex:pageBlock title="Option 1: Migrate Custom Settings/Custom Objects to new Custom Metadata Type">
-
+        <apex:pageBlock title="Option 1: Migrate Custom Setting/Custom Object to new Custom Metadata Type">
            <table>
                <tr>
-                  <td><b>Custom Setting/Custom Objects Name (From) </b></td>
+                  <td><b>Custom Setting/Custom Object Name (From) </b></td>
                   <td><apex:inputText value="{!csFieldObjCreation}" id="csFieldObjCreation" size="50"/></td>
               </tr>
                <tr>
@@ -141,11 +45,11 @@
             </div>
         </apex:pageBlock>
 
-            <apex:pageBlock title="Option 2: Migrate Custom Settings/Custom Objects to existing Custom Metadata Type">
+            <apex:pageBlock title="Option 2: Migrate Custom Setting/Custom Object to existing Custom Metadata Type">
 
               <table>
                    <tr>
-                      <td><b>Custom Setting/Custom Objects Name (From) </b></td>
+                      <td><b>Custom Setting/Custom Object Name (From) </b></td>
                       <td><apex:inputText value="{!customSettingFromFieldAsIs}" id="customSettingFromFieldAsIs" size="50"/></td>
                   </tr>
                    <tr>
@@ -171,11 +75,11 @@
                 </div>
             </apex:pageBlock>
 
-            <apex:pageBlock title="Option 3: Migrate Custom Settings/Custom Objects to existing Custom Metadata Type (using simple mapping)">
+            <apex:pageBlock title="Option 3: Migrate Custom Setting/Custom Object to existing Custom Metadata Type (using simple mapping)">
 
                 <table>
                      <tr>
-                        <td><b>Custom Setting/Custom Objects, Format: CS.fieldName</b></td>
+                        <td><b>Custom Setting/Custom Object, Format: CS.fieldName</b></td>
                         <td><apex:inputText value="{!customSettingFromFieldSimple}" id="customSettingFromFieldSimple" size="50"/></td>
                     </tr>
                     <tr>
@@ -198,10 +102,10 @@
                 </div>
             </apex:pageBlock>
 
-            <apex:pageBlock title="Option 4: Migrate Custom Settings/Custom Objects to existing Custom Metadata Type (using custom mapping)">
+            <apex:pageBlock title="Option 4: Migrate Custom Setting/Custom Object to existing Custom Metadata Type (using custom mapping)">
                 <table>
                      <tr>
-                        <td><b>Custom Setting/Custom Objects Name</b></td>
+                        <td><b>Custom Setting/Custom Object Name</b></td>
                         <td><apex:inputText value="{!customSettingFromFieldJson}" id="customSettingFromFieldJson" size="50"/></td>
                     </tr>
                     <tr>
@@ -209,7 +113,7 @@
                         <td><apex:inputText value="{!cmdToFieldJson}" id="cmdToFieldJson" size="50"/></td>
                     </tr>
                      <tr>
-                        <td><b>Custom Setting, JSON, example: </b></td>
+                        <td><b>Json Mapping</b></td>
                         <td><apex:inputTextArea value="{!jsonMapping}" id="jsonMapping" rows="10" cols="60"/></td>
                     </tr>
                      <tr>
