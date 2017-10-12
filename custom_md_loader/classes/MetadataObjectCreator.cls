@@ -28,12 +28,9 @@ public with sharing class MetadataObjectCreator {
 
   public static void createCustomObject(MetadataMappingInfo mappingInfo) {
     try {
-      System.debug('createCustomObject -->');
       String fullName = mappingInfo.getCustomMetadadataTypeName();
 
-      System.debug('fullName ->' + fullName);
       String strippedLabel = fullName.replaceAll('\\W+', '_').replaceAll('__+', '_').replaceAll('\\A[^a-zA-Z]+', '').replaceAll('_$', '');
-      System.debug('strippedLabel ->' + strippedLabel);
 
       String pluralLabel = fullName.subString(0, fullName.indexOf(AppConstants.MDT_SUFFIX));
       String label = pluralLabel;
@@ -57,12 +54,9 @@ public with sharing class MetadataObjectCreator {
 
   public static void createCustomField(MetadataMappingInfo mappingInfo) {
     try {
-      System.debug('createCustomField -->');
-
       String fullName = mappingInfo.getCustomMetadadataTypeName();
 
       String strippedLabel = fullName.replaceAll('\\W+', '_').replaceAll('__+', '_').replaceAll('\\A[^a-zA-Z]+', '').replaceAll('_$', '');
-      System.debug('strippedLabel ->' + strippedLabel);
 
       String fieldFullName 	= '';
       String label 			= '';

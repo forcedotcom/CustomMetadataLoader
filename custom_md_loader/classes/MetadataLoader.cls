@@ -122,7 +122,6 @@ public virtual with sharing class MetadataLoader {
   }
 
   public virtual void migrate(MetadataMappingInfo mappingInfo) {
-    System.debug('MetadataLoader.migrate -->');
   }
 
   public MetadataMapperDefault getMapper() {
