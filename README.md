@@ -76,10 +76,12 @@ Input the following:
 	--Api Name of Custom Setting (e.g. VAT_Settings_CS__c)
 	--Api Name of Custom Metadata Types (e.g. VAT_Settings__mdt)
 	--Json Mapping (Sample below)
-		{
-			"Active__c" : "IsActive__c",
-			"Timeout__c" : "GlobalTimeout__c",
-		}
+	{
+		"Active__c" : "IsActive__c",
+		"Timeout__c" : "GlobalTimeout__c",
+	}
+	Please note, key should be the Custom Setting/Object field name and that the value is the CMT field name.
+
 Click on 'Migrate'
 
 ## Custom metadata migrator: more details
@@ -92,7 +94,7 @@ Click on 'Migrate'
 2. Custom Metadata Types label and names
 	- Custom Setting/Custom Object record name converted into Custom Metadata Types label and name.
 	- Custom Setting name special character replaced with "_" in Custom Metadata Type names
-	- If Custom Setting name starts with digit, then Custom Metadata Types name will be appended with "X"
+	- If Custom Setting name starts with digit, then Custom Metadata Types name will be prepended with "X"
 
 3. Custom Settings of type hierarchy not supported.
 
