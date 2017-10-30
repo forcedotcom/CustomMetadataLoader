@@ -25,6 +25,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CustomMetadataUploadController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>    
+    <classAccesses>
         <apexClass>CustomMetadataUploadControllerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -53,8 +57,16 @@
         <apexPage>CustomMetadataRecordUploader</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
+    <pageAccesses>
+        <apexPage>CMTMigrator</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>    
     <tabSettings>
         <tab>Custom_Metadata_Loader</tab>
         <visibility>Visible</visibility>
     </tabSettings>
+    <tabSettings>
+        <tab>CMT_Migrator</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>    
 </PermissionSet>
