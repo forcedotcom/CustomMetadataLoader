@@ -8,7 +8,7 @@
 <apex:page controller="CustomMetadataUploadController" docType="html-5.0" sidebar="false">
   <body class="homeTab">
       <apex:form >
-            <apex:pagemessages escape="false"/>
+            <apex:pagemessages escape="true"/>
             
             <apex:pageBlock >
              <apex:ActionRegion >
