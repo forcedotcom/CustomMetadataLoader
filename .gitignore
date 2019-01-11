@@ -1,0 +1,19 @@
+# Visual Studio Code
+.vscode
+.sonarlint
+
+# Salesforce
+.sfdx/
+mdapipkg
+backup_callroutingmdt
+config/server.txt
+.keyfile.txt
+*.csv
+**customMetadata
+**remoteSiteSettings
+
+
+#OS X
+.DS_Store*
+Icon?
+._*

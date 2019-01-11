@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PrefixPattern__c</fullName>
+    <description>This lookup points to a prefix matcher pattern for recognition of valid prefixes.</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>This lookup points to a prefix matcher pattern for recognition of valid prefixes.</inlineHelpText>
+    <label>Prefix Pattern</label>
+    <referenceTo>MatcherPattern__mdt</referenceTo>
+    <relationshipLabel>CallRoutingProductSettings</relationshipLabel>
+    <relationshipName>CallRoutingProductSettings</relationshipName>
+    <required>false</required>
+    <type>MetadataRelationship</type>
+    <unique>false</unique>
+</CustomField>

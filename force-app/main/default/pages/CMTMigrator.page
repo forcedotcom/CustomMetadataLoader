@@ -1,0 +1,138 @@
+<!--
+ * Copyright (c) 2016, salesforce.com, inc.
+ * All rights reserved.
+ * Licensed under the BSD 3-Clause license.
+ * For full license text, see LICENSE.txt file in the repo root  or https://opensource.org/licenses/BSD-3-Clause
+ */
+-->
+<apex:page controller="MetadataMigrationController" docType="html-5.0" sidebar="false">
+	<style type="text/css">
+    	.pbTitle {
+	        white-space: nowrap;
+    	}
+	</style>
+
+	<body>
+      <apex:form id="form">
+       	<apex:pageBlock title="Messages" rendered="{!isMessage == true}">
+            <apex:pageMessages />
+        </apex:pageBlock>
+
+        <apex:pageBlock title="Option 1: Migrate Custom Setting/Custom Object to new Custom Metadata Type">
+           <table>
+               <tr>
+                  <td><b>Custom Setting/Custom Object Name (From) </b></td>
+                  <td><apex:inputText value="{!csFieldObjCreation}" id="csFieldObjCreation" size="50"/></td>
+              </tr>
+               <tr>
+                  <td><b>Custom Metadata Type Name (To) </b></td>
+                  <td><apex:inputText value="{!cmtFieldObjCreation}" id="cmtFieldObjCreation" size="50"/></td>
+
+              </tr>
+               <tr>
+                  <td><b>Operation Type</b></td>
+                  <td> <apex:selectList value="{!opTypeFieldObjCreation}" size="1">
+                            <apex:selectOptions value="{!objCreationOpTypes}"/>
+                      </apex:selectList>
+                    </td>
+              </tr>
+            </table>
+
+            <div draggable="false" >
+                <br/>
+                    <apex:commandButton value="Migrate" action="{!migrateAsIsWithObjCreation}" id="migrateAsIsWithObjCreation"/>
+                 <br/>
+            </div>
+        </apex:pageBlock>
+
+            <apex:pageBlock title="Option 2: Migrate Custom Setting/Custom Object to existing Custom Metadata Type">
+
+              <table>
+                   <tr>
+                      <td><b>Custom Setting/Custom Object Name (From) </b></td>
+                      <td><apex:inputText value="{!customSettingFromFieldAsIs}" id="customSettingFromFieldAsIs" size="50"/></td>
+                  </tr>
+                   <tr>
+                      <td><b>Custom Metadata Type Name (To) </b></td>
+                      <td> <apex:selectList value="{!selectedType}" size="1">
+                                <apex:selectOptions value="{!cmdTypes}"/>
+                          </apex:selectList>
+                        </td>
+                  </tr>
+                   <tr>
+                      <td><b>Operation Type</b></td>
+                      <td> <apex:selectList value="{!selectedOpTypeAsIs}" size="1">
+                                <apex:selectOptions value="{!opTypes}"/>
+                          </apex:selectList>
+                        </td>
+                  </tr>
+              </table>
+
+                <div draggable="false" >
+                    <br/>
+                        <apex:commandButton value="Migrate" action="{!migrateAsIsMapping}" id="migrateAsIsMapping"/>
+                     <br/>
+                </div>
+            </apex:pageBlock>
+
+            <apex:pageBlock title="Option 3: Migrate Custom Setting/Custom Object to existing Custom Metadata Type (using simple mapping)">
+
+                <table>
+                     <tr>
+                        <td><b>Custom Setting/Custom Object, Format: CS.fieldName</b></td>
+                        <td><apex:inputText value="{!customSettingFromFieldSimple}" id="customSettingFromFieldSimple" size="50"/></td>
+                    </tr>
+                    <tr>
+                        <td><b>Custom Metadata Type, Format: CMT.fieldName</b></td>
+                        <td><apex:inputText value="{!cmdToFieldSimple}" id="cmdToFieldSimple" size="50"/></td>
+                    </tr>
+                     <tr>
+                        <td><b>Operation Type</b></td>
+                        <td> <apex:selectList value="{!selectedOpTypeSimple}" size="1">
+                                  <apex:selectOptions value="{!opTypes}"/>
+                            </apex:selectList>
+                          </td>
+                    </tr>
+                </table>
+
+                <div draggable="false" >
+                    <br/>
+                        <apex:commandButton value="Migrate" action="{!migrateSimpleMapping}" id="migrateSimpleMapping"/>
+                    <br/>
+                </div>
+            </apex:pageBlock>
+
+            <apex:pageBlock title="Option 4: Migrate Custom Setting/Custom Object to existing Custom Metadata Type (using custom mapping)">
+                <table>
+                     <tr>
+                        <td><b>Custom Setting/Custom Object Name</b></td>
+                        <td><apex:inputText value="{!customSettingFromFieldJson}" id="customSettingFromFieldJson" size="50"/></td>
+                    </tr>
+                    <tr>
+                        <td><b>Custom Metadata Type Name</b></td>
+                        <td><apex:inputText value="{!cmdToFieldJson}" id="cmdToFieldJson" size="50"/></td>
+                    </tr>
+                     <tr>
+                        <td><b>Json Mapping</b></td>
+                        <td><apex:inputTextArea value="{!jsonMapping}" id="jsonMapping" rows="10" cols="60"/></td>
+                    </tr>
+                     <tr>
+                        <td><b>Operation Type</b></td>
+                        <td> <apex:selectList value="{!selectedOpTypeCustom}" size="1">
+                                  <apex:selectOptions value="{!opTypes}"/>
+                            </apex:selectList>
+                          </td>
+                    </tr>
+                </table>
+
+                <div draggable="false" >
+                    <br/>
+                        <apex:commandButton value="Migrate" action="{!migrateCustomMapping}" id="migrateCustomMapping"/>
+                    <br/>
+                </div>
+            </apex:pageBlock>
+
+       </apex:form>
+   </body>
+
+</apex:page>
