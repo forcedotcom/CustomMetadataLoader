@@ -10,10 +10,9 @@
       <apex:form >
             <apex:pagemessages escape="true"/>
             
-            <apex:pageBlock >
+          <apex:pageBlock >
              <apex:ActionRegion >
                 <apex:pageBlockSection columns="2"> 
-                      
                       <apex:inputFile value="{!csvFileBody}"/>
                       
                       <apex:selectList value="{!selectedType}" size="1">

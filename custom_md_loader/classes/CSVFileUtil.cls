@@ -25,8 +25,8 @@ public class CSVFileUtil {
         // now replace all remaining double quotes - we do this so that we can reconstruct
         // fields with commas inside assuming they begin and end with a double quote
         contents = contents.replaceAll('""','DBLQT');
-	//windows case - replace all carriage + new line character to just new line character
-	contents = contents.replaceAll('\r\n','\n');
+		//windows case - replace all carriage + new line character to just new line character
+		contents = contents.replaceAll('\r\n','\n');
         //now replace all return char to new line character
         contents = contents.replaceAll('\r','\n');
         // we are not attempting to handle fields with a newline inside of them
@@ -40,9 +40,9 @@ public class CSVFileUtil {
         Integer num = 0;
         for(String line : lines) {
             // check for blank CSV lines (only commas)
-            if (line.replaceAll(',','').trim().length() == 0) break;
+            if (line.replaceAll(AppConstants.FLD_SEPARATOR,'').trim().length() == 0) break;
             
-            List<String> fields = line.split(',');  
+            List<String> fields = line.split(AppConstants.FLD_SEPARATOR);  
             List<String> cleanFields = new List<String>();
             String compositeField;
             Boolean makeCompositeField = false;
@@ -53,11 +53,11 @@ public class CSVFileUtil {
                     makeCompositeField = true;
                     compositeField = field;
                 } else if (field.endsWith('"')) {
-                    compositeField += ',' + field;
+                    compositeField += AppConstants.FLD_SEPARATOR + field;
                     cleanFields.add(compositeField.replaceAll('DBLQT','"').trim());
                     makeCompositeField = false;
                 } else if (makeCompositeField) {
-                    compositeField +=  ',' + field;
+                    compositeField +=  AppConstants.FLD_SEPARATOR + field;
                 } else {
                     cleanFields.add(field.replaceAll('DBLQT','"').trim());
                 }

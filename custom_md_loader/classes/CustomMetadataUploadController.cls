@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root  or https://opensource.org/licenses/BSD-3-Clause
  */
  
-public class CustomMetadataUploadController {
+public with sharing class CustomMetadataUploadController {
     static MetadataService.MetadataPort service = MetadataUtil.getPort();    
     
     private final Set<String> standardFieldsInHeader = new Set<String>();
@@ -14,12 +14,14 @@ public class CustomMetadataUploadController {
     public boolean showRecordsTable{get;set;}
     public String selectedType{get;set;}
     public Blob csvFileBody{get;set;}
-    public SObject[] records{get;set;}
+    transient public SObject[] records{get;set;}
     public List<SelectOption> cmdTypes{public get;set;}
-    public List<String> fieldNamesForDisplay{public get;set;}
-    
+    transient public List<String> fieldNamesForDisplay{public get;set;}
+    public Integer maxLoadSize{get;set;}
+
     public CustomMetadataUploadController() {
         showRecordsTable = false;
+        maxLoadSize=200;
         loadCustomMetadataMetadata();
         
         //No full name here since we don't want to allow that in the csv header. It is a generated field using type dev name and record dev name/label.
@@ -80,7 +82,7 @@ public class CustomMetadataUploadController {
                 count++;
         	}
         }
-        selectQuery = selectQuery + ' FROM ' + selectedType;
+        selectQuery = selectQuery + ' FROM ' + selectedType + ' limit 100';
         records = Database.query(selectQuery);
         showRecordsTable = true;
         return null;
@@ -117,19 +119,16 @@ public class CustomMetadataUploadController {
         
         //validate header fields
         List<String> header = fields[0];
-        /*if(!isHeaderValid(new Set<String>(header), selectedType)) {
-            return;
-        }*/
-	// separated out columns as they were coming as string like: "DeveloperName;Label;Description;"
-	// it would pass the conditions under isHeadervalid() 
-	Set<String> columnSet = new Set<String>();
+        // separated out columns as they were coming as string like: "DeveloperName;Label;Description;"
+        // it would pass the conditions under isHeadervalid() 
+        Set<String> columnSet = new Set<String>();
         
         for(String headerColumn :header) {
             if (headerColumn == null) {
                 continue;
             }
             
-            for (String column :headerColumn.split(';')) {
+            for (String column :headerColumn.split(AppConstants.FLD_SEPARATOR)) {
                 columnSet.add(column);
             }
         }
@@ -139,7 +138,6 @@ public class CustomMetadataUploadController {
         }
         
         //transform to custom metadata - bulk size = 200 records
-        Integer maxLoadSize = 200;
         for(Integer i = 1; i < fields.size(); i = i + maxLoadSize) {
             MetadataUtil.transformToCustomMetadataAndCreateUpdate(standardFieldsInHeader, subset(fields, i, maxLoadSize), header, selectedType, i);
         }
@@ -152,10 +150,6 @@ public class CustomMetadataUploadController {
             ApexPages.addMessage(errorMessage);
             return false;
         }
-        
-        System.debug(selectedType);
-        
-        
         
         Set<String> fieldApiNames = new Set<String>(standardFieldsInHeader);
         nonSortedApiNames = new List<String>(standardFieldsInHeader);

@@ -68,7 +68,7 @@ public class MetadataUtil {
                 continue;
             }
 
-            fieldNameSet.addAll(fieldNames.split(';'));
+            fieldNameSet.addAll(fieldNames.split(AppConstants.FLD_SEPARATOR));
         }
 
         for(List<String> singleRowOfValues : fieldValues) {
@@ -79,35 +79,19 @@ public class MetadataUtil {
                 return;
             }
             
-            Integer index = 0;
             String typeDevName = selectedType.subString(0, selectedType.indexOf(AppConstants.MDT_SUFFIX));
             Map<String, String> fieldsAndValues = new Map<String, String>();
         
             // separated out field values as they were coming as string like: "XXX;YYY;ZZZZ;"
-            List<String> fieldValueList = new List<String>();
-
-            for (String singleRowFieldValues :singleRowOfValues) {
-                if (String.isBlank(singleRowFieldValues)) {
-                    continue;
-                }
-            
-                fieldValueList.addAll(singleRowFieldValues.split(';'));
-            }
+            Integer index = 0;
             for(String fieldName : fieldNameSet) {
                 if(fieldName.equals(AppConstants.DEV_NAME_ATTRIBUTE)) {
-		    if (fieldValueList.size() > index) {
-                        fieldsAndValues.put(AppConstants.FULL_NAME_ATTRIBUTE, typeDevName + '.'+ fieldValueList.get(index));
-			     
-                        //adding dev_name here since we might need it to default label
-                        fieldsAndValues.put(fieldName, fieldValueList.get(index));
-		    }
-                } else {
-                    if (fieldValueList.size() > index) {
-                        fieldsAndValues.put(fieldName, fieldValueList.get(index));
-                    }
-                	//fieldsAndValues.put(fieldName, singleRowOfValues.get(index));
+                    fieldsAndValues.put(AppConstants.FULL_NAME_ATTRIBUTE, typeDevName + '.'+ singleRowOfValues.get(index));
+                    //adding dev_name here since we might need it to default label
                 }
-                index++;
+                String fieldValue = singleRowOfValues.get(index++);
+                fieldValue = String.isBlank(fieldValue) ? null : fieldValue;
+                fieldsAndValues.put(fieldName, fieldValue);
             }
             
             if(fieldsAndValues.get(AppConstants.FULL_NAME_ATTRIBUTE) == null) {
@@ -122,6 +106,7 @@ public class MetadataUtil {
             customMetadataRecords[rowCount++] = transformToCustomMetadata(standardFields, fieldsAndValues);
         }
         upsertMetadataAndValidate(customMetadataRecords);
+        
     }
     
     /*
