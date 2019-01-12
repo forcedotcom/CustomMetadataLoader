@@ -19,7 +19,7 @@ public class CustomMetadataLoaderController {
         // Get Host Domain
         host = ApexPages.currentPage().getHeaders().get('Host');
         // Get namespace prefix for picklist package or placeholder for pre-packaging
-        prefixOrLocal = host.substringBefore('.').replaceAll('-', '_');
+        prefixOrLocal = host.substringBefore('.').replaceAll('-{1,}', '_');
         metadataConnectionWarning = true;
         ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, 'Unable to connect to the Salesforce Metadata API.'));
 	    ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, 'A Remote Site Setting must be created in your org before you can use this tool.'));
