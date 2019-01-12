@@ -1,0 +1,382 @@
+{
+    "summary": {
+        "outcome": "Passed",
+        "testsRan": 15,
+        "passing": 15,
+        "failing": 0,
+        "skipped": 0,
+        "passRate": "100%",
+        "failRate": "0%",
+        "testStartTime": "Jan 8, 2019 7:41 AM",
+        "testExecutionTime": "1247 ms",
+        "testTotalTime": "1247 ms",
+        "commandTime": "16544 ms",
+        "hostname": "https://CS82.salesforce.com",
+        "orgId": "00D3E000000DFZeUAO",
+        "username": "test-m2eurgcvkpsd@example.com",
+        "testRunId": "7073E000011wwr1",
+        "userId": "0053E0000030X9zQAE"
+    },
+    "tests": [
+        {
+            "attributes": {
+                "type": "ApexTestResult",
+                "url": "/services/data/v44.0/tooling/sobjects/ApexTestResult/07M3E000003zKc4UAE"
+            },
+            "Id": "07M3E000003zKc4UAE",
+            "QueueItemId": "7093E000000iM56QAE",
+            "StackTrace": null,
+            "Message": null,
+            "AsyncApexJobId": "7073E000011wwr1QAA",
+            "MethodName": "testCheckMdApiFails",
+            "Outcome": "Pass",
+            "ApexClass": {
+                "attributes": {
+                    "type": "ApexClass",
+                    "url": "/services/data/v44.0/tooling/sobjects/ApexClass/01p3E000001hQ3uQAE"
+                },
+                "Id": "01p3E000001hQ3uQAE",
+                "Name": "CustomMetadataLoaderControllerTest",
+                "NamespacePrefix": null
+            },
+            "RunTime": 70,
+            "FullName": "CustomMetadataLoaderControllerTest.testCheckMdApiFails"
+        },
+        {
+            "attributes": {
+                "type": "ApexTestResult",
+                "url": "/services/data/v44.0/tooling/sobjects/ApexTestResult/07M3E000003zKc5UAE"
+            },
+            "Id": "07M3E000003zKc5UAE",
+            "QueueItemId": "7093E000000iM56QAE",
+            "StackTrace": null,
+            "Message": null,
+            "AsyncApexJobId": "7073E000011wwr1QAA",
+            "MethodName": "testCheckMdApiSucceeds",
+            "Outcome": "Pass",
+            "ApexClass": {
+                "attributes": {
+                    "type": "ApexClass",
+                    "url": "/services/data/v44.0/tooling/sobjects/ApexClass/01p3E000001hQ3uQAE"
+                },
+                "Id": "01p3E000001hQ3uQAE",
+                "Name": "CustomMetadataLoaderControllerTest",
+                "NamespacePrefix": null
+            },
+            "RunTime": 16,
+            "FullName": "CustomMetadataLoaderControllerTest.testCheckMdApiSucceeds"
+        },
+        {
+            "attributes": {
+                "type": "ApexTestResult",
+                "url": "/services/data/v44.0/tooling/sobjects/ApexTestResult/07M3E000003zKc6UAE"
+            },
+            "Id": "07M3E000003zKc6UAE",
+            "QueueItemId": "7093E000000iM56QAE",
+            "StackTrace": null,
+            "Message": null,
+            "AsyncApexJobId": "7073E000011wwr1QAA",
+            "MethodName": "testDisplayMetadataResponse",
+            "Outcome": "Pass",
+            "ApexClass": {
+                "attributes": {
+                    "type": "ApexClass",
+                    "url": "/services/data/v44.0/tooling/sobjects/ApexClass/01p3E000001hQ3uQAE"
+                },
+                "Id": "01p3E000001hQ3uQAE",
+                "Name": "CustomMetadataLoaderControllerTest",
+                "NamespacePrefix": null
+            },
+            "RunTime": 6,
+            "FullName": "CustomMetadataLoaderControllerTest.testDisplayMetadataResponse"
+        },
+        {
+            "attributes": {
+                "type": "ApexTestResult",
+                "url": "/services/data/v44.0/tooling/sobjects/ApexTestResult/07M3E000003zKc9UAE"
+            },
+            "Id": "07M3E000003zKc9UAE",
+            "QueueItemId": "7093E000000iM54QAE",
+            "StackTrace": null,
+            "Message": null,
+            "AsyncApexJobId": "7073E000011wwr1QAA",
+            "MethodName": "testCreateCustomMetadata",
+            "Outcome": "Pass",
+            "ApexClass": {
+                "attributes": {
+                    "type": "ApexClass",
+                    "url": "/services/data/v44.0/tooling/sobjects/ApexClass/01p3E000001hQ3wQAE"
+                },
+                "Id": "01p3E000001hQ3wQAE",
+                "Name": "CustomMetadataUploadControllerTest",
+                "NamespacePrefix": null
+            },
+            "RunTime": 363,
+            "FullName": "CustomMetadataUploadControllerTest.testCreateCustomMetadata"
+        },
+        {
+            "attributes": {
+                "type": "ApexTestResult",
+                "url": "/services/data/v44.0/tooling/sobjects/ApexTestResult/07M3E000003zKcAUAU"
+            },
+            "Id": "07M3E000003zKcAUAU",
+            "QueueItemId": "7093E000000iM54QAE",
+            "StackTrace": null,
+            "Message": null,
+            "AsyncApexJobId": "7073E000011wwr1QAA",
+            "MethodName": "testCreateCustomMetadataWithDevName",
+            "Outcome": "Pass",
+            "ApexClass": {
+                "attributes": {
+                    "type": "ApexClass",
+                    "url": "/services/data/v44.0/tooling/sobjects/ApexClass/01p3E000001hQ3wQAE"
+                },
+                "Id": "01p3E000001hQ3wQAE",
+                "Name": "CustomMetadataUploadControllerTest",
+                "NamespacePrefix": null
+            },
+            "RunTime": 33,
+            "FullName": "CustomMetadataUploadControllerTest.testCreateCustomMetadataWithDevName"
+        },
+        {
+            "attributes": {
+                "type": "ApexTestResult",
+                "url": "/services/data/v44.0/tooling/sobjects/ApexTestResult/07M3E000003zKcBUAU"
+            },
+            "Id": "07M3E000003zKcBUAU",
+            "QueueItemId": "7093E000000iM54QAE",
+            "StackTrace": null,
+            "Message": null,
+            "AsyncApexJobId": "7073E000011wwr1QAA",
+            "MethodName": "testInvalidFileRowSizeDoesntMatch",
+            "Outcome": "Pass",
+            "ApexClass": {
+                "attributes": {
+                    "type": "ApexClass",
+                    "url": "/services/data/v44.0/tooling/sobjects/ApexClass/01p3E000001hQ3wQAE"
+                },
+                "Id": "01p3E000001hQ3wQAE",
+                "Name": "CustomMetadataUploadControllerTest",
+                "NamespacePrefix": null
+            },
+            "RunTime": 33,
+            "FullName": "CustomMetadataUploadControllerTest.testInvalidFileRowSizeDoesntMatch"
+        },
+        {
+            "attributes": {
+                "type": "ApexTestResult",
+                "url": "/services/data/v44.0/tooling/sobjects/ApexTestResult/07M3E000003zKcCUAU"
+            },
+            "Id": "07M3E000003zKcCUAU",
+            "QueueItemId": "7093E000000iM54QAE",
+            "StackTrace": null,
+            "Message": null,
+            "AsyncApexJobId": "7073E000011wwr1QAA",
+            "MethodName": "testInvalidHeaderMissingFields",
+            "Outcome": "Pass",
+            "ApexClass": {
+                "attributes": {
+                    "type": "ApexClass",
+                    "url": "/services/data/v44.0/tooling/sobjects/ApexClass/01p3E000001hQ3wQAE"
+                },
+                "Id": "01p3E000001hQ3wQAE",
+                "Name": "CustomMetadataUploadControllerTest",
+                "NamespacePrefix": null
+            },
+            "RunTime": 25,
+            "FullName": "CustomMetadataUploadControllerTest.testInvalidHeaderMissingFields"
+        },
+        {
+            "attributes": {
+                "type": "ApexTestResult",
+                "url": "/services/data/v44.0/tooling/sobjects/ApexTestResult/07M3E000003zKcDUAU"
+            },
+            "Id": "07M3E000003zKcDUAU",
+            "QueueItemId": "7093E000000iM54QAE",
+            "StackTrace": null,
+            "Message": null,
+            "AsyncApexJobId": "7073E000011wwr1QAA",
+            "MethodName": "testInvalidHeaderWrongFields",
+            "Outcome": "Pass",
+            "ApexClass": {
+                "attributes": {
+                    "type": "ApexClass",
+                    "url": "/services/data/v44.0/tooling/sobjects/ApexClass/01p3E000001hQ3wQAE"
+                },
+                "Id": "01p3E000001hQ3wQAE",
+                "Name": "CustomMetadataUploadControllerTest",
+                "NamespacePrefix": null
+            },
+            "RunTime": 31,
+            "FullName": "CustomMetadataUploadControllerTest.testInvalidHeaderWrongFields"
+        },
+        {
+            "attributes": {
+                "type": "ApexTestResult",
+                "url": "/services/data/v44.0/tooling/sobjects/ApexTestResult/07M3E000003zKcEUAU"
+            },
+            "Id": "07M3E000003zKcEUAU",
+            "QueueItemId": "7093E000000iM54QAE",
+            "StackTrace": null,
+            "Message": null,
+            "AsyncApexJobId": "7073E000011wwr1QAA",
+            "MethodName": "testSelectedTypeMissing",
+            "Outcome": "Pass",
+            "ApexClass": {
+                "attributes": {
+                    "type": "ApexClass",
+                    "url": "/services/data/v44.0/tooling/sobjects/ApexClass/01p3E000001hQ3wQAE"
+                },
+                "Id": "01p3E000001hQ3wQAE",
+                "Name": "CustomMetadataUploadControllerTest",
+                "NamespacePrefix": null
+            },
+            "RunTime": 23,
+            "FullName": "CustomMetadataUploadControllerTest.testSelectedTypeMissing"
+        },
+        {
+            "attributes": {
+                "type": "ApexTestResult",
+                "url": "/services/data/v44.0/tooling/sobjects/ApexTestResult/07M3E000003zKcFUAU"
+            },
+            "Id": "07M3E000003zKcFUAU",
+            "QueueItemId": "7093E000000iM54QAE",
+            "StackTrace": null,
+            "Message": null,
+            "AsyncApexJobId": "7073E000011wwr1QAA",
+            "MethodName": "testUploadEmptyFile",
+            "Outcome": "Pass",
+            "ApexClass": {
+                "attributes": {
+                    "type": "ApexClass",
+                    "url": "/services/data/v44.0/tooling/sobjects/ApexClass/01p3E000001hQ3wQAE"
+                },
+                "Id": "01p3E000001hQ3wQAE",
+                "Name": "CustomMetadataUploadControllerTest",
+                "NamespacePrefix": null
+            },
+            "RunTime": 23,
+            "FullName": "CustomMetadataUploadControllerTest.testUploadEmptyFile"
+        },
+        {
+            "attributes": {
+                "type": "ApexTestResult",
+                "url": "/services/data/v44.0/tooling/sobjects/ApexTestResult/07M3E000003zKcGUAU"
+            },
+            "Id": "07M3E000003zKcGUAU",
+            "QueueItemId": "7093E000000iM54QAE",
+            "StackTrace": null,
+            "Message": null,
+            "AsyncApexJobId": "7073E000011wwr1QAA",
+            "MethodName": "testUploadNoFile",
+            "Outcome": "Pass",
+            "ApexClass": {
+                "attributes": {
+                    "type": "ApexClass",
+                    "url": "/services/data/v44.0/tooling/sobjects/ApexClass/01p3E000001hQ3wQAE"
+                },
+                "Id": "01p3E000001hQ3wQAE",
+                "Name": "CustomMetadataUploadControllerTest",
+                "NamespacePrefix": null
+            },
+            "RunTime": 21,
+            "FullName": "CustomMetadataUploadControllerTest.testUploadNoFile"
+        },
+        {
+            "attributes": {
+                "type": "ApexTestResult",
+                "url": "/services/data/v44.0/tooling/sobjects/ApexTestResult/07M3E000003zKbzUAE"
+            },
+            "Id": "07M3E000003zKbzUAE",
+            "QueueItemId": "7093E000000iM55QAE",
+            "StackTrace": null,
+            "Message": null,
+            "AsyncApexJobId": "7073E000011wwr1QAA",
+            "MethodName": "coverGeneratedCodeCRUDOperations",
+            "Outcome": "Pass",
+            "ApexClass": {
+                "attributes": {
+                    "type": "ApexClass",
+                    "url": "/services/data/v44.0/tooling/sobjects/ApexClass/01p3E000001hQ4GQAU"
+                },
+                "Id": "01p3E000001hQ4GQAU",
+                "Name": "MetadataServiceTest",
+                "NamespacePrefix": null
+            },
+            "RunTime": 349,
+            "FullName": "MetadataServiceTest.coverGeneratedCodeCRUDOperations"
+        },
+        {
+            "attributes": {
+                "type": "ApexTestResult",
+                "url": "/services/data/v44.0/tooling/sobjects/ApexTestResult/07M3E000003zKc0UAE"
+            },
+            "Id": "07M3E000003zKc0UAE",
+            "QueueItemId": "7093E000000iM55QAE",
+            "StackTrace": null,
+            "Message": null,
+            "AsyncApexJobId": "7073E000011wwr1QAA",
+            "MethodName": "coverGeneratedCodeFileBasedOperations1",
+            "Outcome": "Pass",
+            "ApexClass": {
+                "attributes": {
+                    "type": "ApexClass",
+                    "url": "/services/data/v44.0/tooling/sobjects/ApexClass/01p3E000001hQ4GQAU"
+                },
+                "Id": "01p3E000001hQ4GQAU",
+                "Name": "MetadataServiceTest",
+                "NamespacePrefix": null
+            },
+            "RunTime": 17,
+            "FullName": "MetadataServiceTest.coverGeneratedCodeFileBasedOperations1"
+        },
+        {
+            "attributes": {
+                "type": "ApexTestResult",
+                "url": "/services/data/v44.0/tooling/sobjects/ApexTestResult/07M3E000003zKc1UAE"
+            },
+            "Id": "07M3E000003zKc1UAE",
+            "QueueItemId": "7093E000000iM55QAE",
+            "StackTrace": null,
+            "Message": null,
+            "AsyncApexJobId": "7073E000011wwr1QAA",
+            "MethodName": "coverGeneratedCodeFileBasedOperations2",
+            "Outcome": "Pass",
+            "ApexClass": {
+                "attributes": {
+                    "type": "ApexClass",
+                    "url": "/services/data/v44.0/tooling/sobjects/ApexClass/01p3E000001hQ4GQAU"
+                },
+                "Id": "01p3E000001hQ4GQAU",
+                "Name": "MetadataServiceTest",
+                "NamespacePrefix": null
+            },
+            "RunTime": 9,
+            "FullName": "MetadataServiceTest.coverGeneratedCodeFileBasedOperations2"
+        },
+        {
+            "attributes": {
+                "type": "ApexTestResult",
+                "url": "/services/data/v44.0/tooling/sobjects/ApexTestResult/07M3E000003zKc2UAE"
+            },
+            "Id": "07M3E000003zKc2UAE",
+            "QueueItemId": "7093E000000iM55QAE",
+            "StackTrace": null,
+            "Message": null,
+            "AsyncApexJobId": "7073E000011wwr1QAA",
+            "MethodName": "coverGeneratedCodeTypes",
+            "Outcome": "Pass",
+            "ApexClass": {
+                "attributes": {
+                    "type": "ApexClass",
+                    "url": "/services/data/v44.0/tooling/sobjects/ApexClass/01p3E000001hQ4GQAU"
+                },
+                "Id": "01p3E000001hQ4GQAU",
+                "Name": "MetadataServiceTest",
+                "NamespacePrefix": null
+            },
+            "RunTime": 228,
+            "FullName": "MetadataServiceTest.coverGeneratedCodeTypes"
+        }
+    ]
+}

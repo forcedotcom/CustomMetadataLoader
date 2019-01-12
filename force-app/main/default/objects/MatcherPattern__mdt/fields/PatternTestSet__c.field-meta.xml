@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PatternTestSet__c</fullName>
+    <description>A set containing all prefixes that should match the prefix pattern separated by the &#39;|&#39;-character, to be used in testclass only.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>A set containing all prefixes that should match the prefix pattern separated by the &#39;|&#39;-character</inlineHelpText>
+    <label>PatternTestSet</label>
+    <required>false</required>
+    <type>TextArea</type>
+</CustomField>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>MasterLabel</columns>
+    <columns>Productgroepcode__c</columns>
+    <columns>Productcode__c</columns>
+    <columns>VAnummer__c</columns>
+    <columns>VTAcode__c</columns>
+    <columns>AdministratieveProductnaam__c</columns>
+    <columns>PrefixPattern__c</columns>
+    <columns>SubfixPattern__c</columns>
+    <columns>Context__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>All</label>
+    <language>en_US</language>
+</ListView>
