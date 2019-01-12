@@ -1,0 +1,9 @@
+# Visual Studio Code
+.vscode
+
+# Salesforce
+
+#OS X
+.DS_Store*
+Icon?
+._*
