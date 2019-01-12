@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>metadata type to administrate specific product settings. Initially it contains the prefixes and subfixes that may be used by customers in the Telephony IVR when entering policy numbers for certain VTA products.</description>
-    <label>CallRoutingProductSetting</label>
-    <pluralLabel>CallRoutingProductSettings</pluralLabel>
-    <visibility>Public</visibility>
-</CustomObject>
