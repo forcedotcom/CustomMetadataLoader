@@ -47,7 +47,7 @@ public with sharing class MetadataObjectCreator {
 
     }
     catch (Exception e) {
-      System.debug('createCustomOnbject.Exception-->' + e.getMessage());
+      System.debug('createCustomObject.Exception-->' + e.getMessage());
       throw e;
     }
   }
