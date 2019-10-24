@@ -22,6 +22,15 @@
                 </apex:pageBlockSection>
                </apex:ActionRegion>
             </apex:pageBlock>
+
+            <div align="center" draggable="false" >
+               <apex:ActionRegion >
+                <apex:commandButton value="Delete Custom MetaData Type" action="{!deleteCustomMetaData}" rendered="true"/>
+                <apex:actionSupport event="onclick"  action="{!deleteCustomMetaData}" rendered="{!showRecordsTable}" oncomplete="window.opener.location.reload();"/>
+              </apex:ActionRegion> 
+            </div>
+            <br/>
+            <br/>
       
             <div align="center" draggable="false" >
                <apex:ActionRegion >

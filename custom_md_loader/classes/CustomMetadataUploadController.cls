@@ -44,6 +44,33 @@ public class CustomMetadataUploadController {
             }
         }
     }
+
+    public PageReference deleteCustomMetaData() {
+        ApexPages.getMessages().clear();
+        showRecordsTable = false;
+        deleteCustomMetadtaRecords();
+        // TODO: Add Success Message / Display Errors
+        return null;
+    }
+    
+    private void deleteCustomMetadtaRecords() {
+        if(selectedType == 'Select type') {
+            ApexPages.Message errorMessage = new ApexPages.Message(ApexPages.severity.ERROR, 'Please choose a valid custom metadata type.');
+            ApexPages.addMessage(errorMessage);
+            return;
+        }
+        
+        String query = 'SELECT DeveloperName FROM ' + selectedType;
+        
+        List<sObject> customRecords = Database.query(query);
+        List<String> recordsToDelete = new List<String>();
+        
+        for (sObject record : customRecords) {
+            recordsToDelete.add(selectedType + '.' + record.get('DeveloperName'));
+        }
+        
+        MetadataUtil.deleteMetadata('CustomMetadata', recordsToDelete);
+    }
     
     public PageReference upsertCustomMetadata() {
         ApexPages.getMessages().clear();
