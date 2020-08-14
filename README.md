@@ -4,7 +4,7 @@ Salesforce CLI commands for custom metadata types are available in v49. The cust
 
 The CLI commands simplify development and help you build automation and synchronize your source from scratch orgs when working with custom metadata types. CLI commands offer more functionality than the custom metadata loader. You can create custom metadata types, generate fields, create records, bulk insert records from a CSV file, and generate custom metadata types from an sObject. In addition, there's no limit on the number of records that can be loaded. 
 
-See the following for more information,
+See the following for more information:
 
 * [Create and Manage Custom Metadata Types Using CLI](https://help.salesforce.com/articleView?id=custommetadatatypes_cli.htm)	
 * [cmdt Commands](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_force_cmdt.htm#cli_reference_force_cmdt) 
