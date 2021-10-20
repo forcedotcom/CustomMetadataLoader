@@ -87,9 +87,17 @@ public class MetadataUtil {
             List<String> fieldValueList = new List<String>();
 
             for (String singleRowFieldValues :singleRowOfValues) {
-                if (String.isBlank(singleRowFieldValues)) {
+		    
+		// Sankaran - not sure why to continue when the value is blank. This will not allow to insert null
+                // values for a field. So, commenting it.    
+                /*if (String.isBlank(singleRowFieldValues)) {
                     continue;
-                }
+                }*/
+		
+		// Sankaran -  If the field value has ", for example, "A (B), C", it is passed along with double quotes
+		// for upsert. So, we need to extract string ignoring " before passing for upsert.
+		if (singleRowFieldValues.startsWith('"') && singleRowFieldValues.endsWith('"'))
+		    singleRowFieldValues = singleRowFieldValues.substring(1, singleRowFieldValues.length()-1);    
             
                 fieldValueList.addAll(singleRowFieldValues.split(';'));
             }
