@@ -36,7 +36,7 @@ Custom metadata loader has a sample custom metadata type CountryMapping__mdt tha
 
 # How to deploy custom metadata loader
 1. Download the folder custom_md_loader and zip all the files inside this folder. Package.xml should be at the top level of the zipped file.
-2. Log in to your developer organization via workbench and deploy this zip file. (migration -> deploy)
+2. Log in to your developer organization via workbench and deploy this zip file. (migration -> deploy). Tick 'Single Package' when deploying.
 
 # How to use custom metadata loader
 
