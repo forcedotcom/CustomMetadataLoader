@@ -42,7 +42,10 @@ public class CSVFileUtil {
             // check for blank CSV lines (only commas)
             if (line.replaceAll(',','').trim().length() == 0) break;
             
-            List<String> fields = line.split(',');  
+	    // -1 in the split method will not remove empty values at the end in the result list.
+	    // For example, if a csv file line has A,B,, -> The result of this split would be 
+	    // ['A', 'B', '', '']. Withouth -1 in the method it would be ['A', 'B']
+            List<String> fields = line.split(',', -1);  
             List<String> cleanFields = new List<String>();
             String compositeField;
             Boolean makeCompositeField = false;
