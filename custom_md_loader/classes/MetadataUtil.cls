@@ -64,9 +64,10 @@ public class MetadataUtil {
 	       // it would pass the conditions under isHeadervalid() 
         Set<String> fieldNameSet = new Set<String>();  
         for (String fieldNames :header) {
-            if (String.isBlank(fieldNames)) {
-                continue;
-            }
+            //removed following lines as redundant, since if any columns have a blank header, they are captured by 'Header must contain the api names of the fields' error
+            //if (String.isBlank(fieldNames)) {
+            //    continue;
+            //}
 
             fieldNameSet.addAll(fieldNames.split(';'));
         }
@@ -87,9 +88,10 @@ public class MetadataUtil {
             List<String> fieldValueList = new List<String>();
 
             for (String singleRowFieldValues :singleRowOfValues) {
-                if (String.isBlank(singleRowFieldValues)) {
-                    continue;
-                }
+		//Removed following lines as they cause values to become misaligned from headers when CSV contains null values
+		//if (String.isBlank(singleRowFieldValues)) {
+                //    continue;
+                //}
             
                 fieldValueList.addAll(singleRowFieldValues.split(';'));
             }
